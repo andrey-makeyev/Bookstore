@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bookstore - Edit Book</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+
+</head>
+<body>
+<div class="container">
+    <header th:insert="blocks/header :: header"></header>
+    <h1>Bookstore</h1>
+    <hr>
+    <h2>Edit Book</h2>
+
+    <form action="#" th:action="@{/saveBook}" th:object="${book}"
+          method="POST">
+
+        <!-- Add hidden form field to handle update -->
+        <input type="hidden" th:field="*{id}" />
+
+        <input type="text" th:field="*{title}"
+               placeholder="Book Title" class="form-control mb-4 col-4">
+        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span><br>
+
+        <input type="text" th:field="*{author}"
+               placeholder="Book Author" class="form-control mb-4 col-4">
+        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></span><br>
+
+        <input type="text" th:field="*{publisher}"
+               placeholder="Book Publisher" class="form-control mb-4 col-4">
+        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('publisher')}" th:errors="*{publisher}"></span><br>
+
+        <input type="text" th:field="*{year}"
+               placeholder="Book Year" class="form-control mb-4 col-4">
+        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span><br>
+
+        <textarea type="text" th:field="*{description}"
+                  placeholder="Book Year" class="form-control mb-4 col-4"></textarea>
+        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span><br>
+
+        <button type="submit" class="btn btn-outline-success col-2"> Update Book</button>
+    </form>
+
+    <hr>
+    <a th:href = "@{/}"> Back to Book List</a>
+</div>
+
+<footer th:insert="blocks/footer :: footer"></footer>
+</body>
+
+</html>

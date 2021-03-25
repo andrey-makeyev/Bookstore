@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bookstore - Book Details</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="container">
+    <header th:insert="blocks/header :: header"></header>
+    <h1>Book Detals</h1>
+    <hr class="featurette-divider">
+    <div th:each="element : ${book}" class="alert alert-info mt-2">
+        Title: <h5 th:text="${element.title}"></h5>
+        Author: <h5 th:text="${element.author}"></h5>
+        Publiher:<h5 th:text="${element.publisher}"></h5>
+        Year:<h5 th:text="${element.year}"></h5>
+        Description:<h5 th:text="${element.description}"></h5>
+        <br>
+        <td> <a th:href="@{/viewEditForm/{id}(id=${element.id})}" class="btn btn-outline-warning">Edit</a>
+            <a th:href="@{/deleteBook/{id}(id=${element.id})}" class="btn btn-outline-danger">Delete</a>
+        </td>
+    </div>
+    <hr>
+    <a th:href = "@{/}"> Back to Book List</a>
+</div>
+
+<footer th:insert="blocks/footer :: footer"></footer>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bookstore</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+
+</head>
+<body>
+
+<div class="container my-2">
+    <header th:insert="blocks/header :: header"></header>
+
+    <h1>Book List</h1>
+
+    <br>
+    <table border="0" class = "table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th class="table-bordered">Book Title
+            </th>
+            <th class="table-bordered">Book Author
+            </th>
+            <th class="table-bordered">Book Publisher
+            </th>
+            <th class="table-bordered">Book Year
+            </th>
+            <th class="table-bordered">Book Details
+            </th>
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+            <th class="border-info" style="background: whitesmoke"> Administration </th>
+                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/viewRegisterForm}" class="btn btn-primary btn-lg align-middle">ADD NEW BOOK</a>
+                <hr>
+                </th:block>
+            </th:block>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${listBooks}">
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author}"></td>
+            <td th:text="${book.publisher}"></td>
+            <td th:text="${book.year}"></td>
+            <td> <a th:href="@{/viewBookDetails/{id}(id=${book.id})}">See more</a>
+            </td>
+            <th:block sec:authorize="hasAnyRole('ROLE_ADMIN')">
+            <td class="border-info" style="background: whitesmoke"> <a th:href="@{/viewEditForm/{id}(id=${book.id})}" class="btn btn-outline-warning">Edit</a>
+                <a th:href="@{/deleteBook/{id}(id=${book.id})}" class="btn btn-outline-danger">Delete</a>
+            </td>
+            </th:block>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:if = "${totalPages > 1}">
+        <div class = "row col-sm-10">
+            <div class = "col-sm-2">
+                Total Books: [[${totalItems}]]
+            </div>
+            <div class = "col-sm-1">
+					<span th:each="i: ${#numbers.sequence(1, totalPages)}">
+						<a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
+						<span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
+					</span>
+            </div>
+            <div class = "col-sm-1">
+                <a th:if="${currentPage >= totalPages}" th:href="@{'/page/' + ${currentPage - 1}}">Previous</a>
+                <span th:unless="${currentPage >= totalPages}">Previous</span>
+            </div>
+            <div class = "col-sm-1">
+                <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}}">Next</a>
+                <span th:unless="${currentPage < totalPages}">Next</span>
+            </div>
+            <div class="col-sm-1">
+                <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}}">Last</a>
+                <span th:unless="${currentPage < totalPages}">Last</span>
+            </div>
+        </div>
+    </div>
+</div>
+<footer th:insert="blocks/footer :: footer"></footer>
+</body>
+</html>

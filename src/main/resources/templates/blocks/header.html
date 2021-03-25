@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<div th:fragment="header" xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" >
+
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+    <link th:href="@{css/style.css}" rel="stylesheet" media="screen"/>
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/jquery-bootpag-min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/pagination.js}"></script>
+    </head>
+
+    <body>
+    <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+        <a class="navbar-brand" href="/">Bookstore</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mx-auto">
+                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                    <div>
+                        <th:block sec:authorize="isAuthenticated()">
+                            Hello
+                            <a th:href="@{/accountInfo}" th:utext="${#request.userPrincipal.name}">..</a>
+                            &nbsp;|&nbsp;
+                            <a th:href="@{/accountLogout}">Logout</a>
+                        </th:block>
+
+                        <th:block sec:authorize="!isAuthenticated()">
+                            <a th:href="@{/}">Login</a>
+                        </th:block>
+                    </div>
+                </th:block>
+            </ul>
+        <ul>
+
+        </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <a class="nav-link" href="/viewLoginForm">Login <span class="sr-only">(current)</span></a>
+            </form>
+        </div>
+    </nav>
+    </body>
+</div>
