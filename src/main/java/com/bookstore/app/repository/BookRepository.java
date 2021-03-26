@@ -11,5 +11,5 @@ import com.bookstore.app.model.Book;
 import java.util.List;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Long>{
+public interface BookRepository extends JpaRepository<Book, Long> {
 }

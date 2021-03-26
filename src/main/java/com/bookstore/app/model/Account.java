@@ -6,6 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "accounts")
@@ -15,8 +18,12 @@ public class Account implements Serializable {
 
     @Id
     @Column(name = "user_name", length = 20, nullable = false)
+    @NotNull
+    @Size(min = 2, max = 30)
     private String userName;
 
+    @NotNull
+    @Min(3)
     @Column(name = "encrypted_password", length = 128, nullable = false)
     private String encrytedPassword;
 

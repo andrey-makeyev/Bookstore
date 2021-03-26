@@ -9,20 +9,21 @@
 <div class="container">
     <header th:insert="blocks/header :: header"></header>
     <th:block sec:authorize="isAuthenticated()">
-<div>Account Info</div>
-<div>
-    <ul>
-        <li>User Name: <span th:utext="${#request.userPrincipal.name}"></span></li>
-        <li>
-            Role:
+        <hr>
+        <div>Bookstore - Account Info</div>
+        <div>
             <ul>
-                <li th:each="auth : ${userDetails.authorities}" th:utext="${auth.authority}"></li>
+                <li>User Name: <span th:utext="${#request.userPrincipal.name}"></span></li>
+                <li>
+                    Role:
+                    <ul>
+                        <li th:each="auth : ${userDetails.authorities}" th:utext="${auth.authority}"></li>
+                    </ul>
+                </li>
             </ul>
-        </li>
-    </ul>
-</div>
+        </div>
     </th:block>
-<footer th:insert="blocks/footer :: footer"></footer>
+    <footer th:insert="blocks/footer :: footer"></footer>
 </div>
 </body>
 </html>

@@ -19,13 +19,13 @@
         Description:<h5 th:text="${element.description}"></h5>
         <br>
         <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-        <td> <a th:href="@{/viewEditForm/{id}(id=${element.id})}" class="btn btn-outline-warning">Edit</a>
-            <a th:href="@{/deleteBook/{id}(id=${element.id})}" class="btn btn-outline-danger">Delete</a>
-        </td>
+            <td><a th:href="@{/viewEditForm/{id}(id=${element.id})}" class="btn btn-outline-warning">Edit</a>
+                <a th:href="@{/deleteBook/{id}(id=${element.id})}" class="btn btn-outline-danger">Delete</a>
+            </td>
         </th:block>
     </div>
     <hr>
-    <a th:href = "@{/}"> Back to Book List</a>
+    <a th:href="@{/}"> Back to Book List</a>
 </div>
 
 <footer th:insert="blocks/footer :: footer"></footer>

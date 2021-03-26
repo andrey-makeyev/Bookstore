@@ -17,7 +17,8 @@
           method="POST">
         <input type="text" th:field="*{title}"
                placeholder="Book Title" class="form-control mb-4 col-4">
-        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span><br>
+        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('title')}"
+              th:errors="*{title}"></span><br>
 
         <input type="text" th:field="*{author}"
                placeholder="Book Author" class="form-control mb-4 col-4">
