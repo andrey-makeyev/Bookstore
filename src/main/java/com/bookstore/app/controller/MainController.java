@@ -1,5 +1,6 @@
 package com.bookstore.app.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,11 +12,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-
 import com.bookstore.app.model.Book;
 import com.bookstore.app.service.BookService;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -50,13 +50,6 @@ public class MainController {
         return "loginForm";
     }
 
-    @GetMapping("/viewRegisterForm")
-    public String viewRegisterForm(Model model) {
-        Book book = new Book();
-        model.addAttribute("book", book);
-        return "bookRegisterForm";
-    }
-
     @GetMapping("/viewBookDetails/{id}")
     public String viewBookDetails(@PathVariable(value = "id") long id, Model model) {
         Optional<Book> book = bookRepository.findById(id);
@@ -66,20 +59,42 @@ public class MainController {
         return "bookDetails";
     }
 
-    @PostMapping("/saveBook")
-    public String saveBook(@ModelAttribute @Valid Book book, Errors errors, Model model) {
+    @GetMapping("/viewRegisterForm")
+    public String viewRegisterForm(Model model) {
+        Book book = new Book();
+        model.addAttribute("book", book);
+        return "bookRegisterForm";
+    }
 
+    @PostMapping("/saveBook")
+    public String saveBook(int id, @RequestParam("file") MultipartFile file,
+                           @RequestParam("isbn") String isbn,
+                           @RequestParam("title") String title,
+                           @RequestParam("author") String author,
+                           @RequestParam("year") Integer year,
+                           @RequestParam("publisher") String publisher,
+                           @RequestParam("description") String description,
+                           @RequestParam("price") BigDecimal price
+    ) /* Errors errors */ {
+                               /*
         if (errors.hasErrors()) {
-            model.addAttribute("book", book);
             return "bookRegisterForm";
         } else {
-            bookService.saveBook(book);
+            try {
+                bookService.saveBook(file, isbn, title, author, year, publisher, description, price);
+            } catch (Exception e) {
+                return "redirect:/";
+            }
+            return "redirect:/";
         }
+    }
+    */
+        bookService.saveBook(id, file, isbn, title, author, year, publisher, description, price);
         return "redirect:/";
     }
 
-    @RequestMapping(value = { "/viewEditForm/{id}" }, method = RequestMethod.GET)
-    public String viewEditForm(@PathVariable ( value = "id") long id, Model model) {
+    @RequestMapping(value = {"/viewEditForm/{id}"}, method = RequestMethod.GET)
+    public String viewEditForm(@PathVariable(value = "id") long id, Model model) {
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(userDetails.getPassword());
@@ -92,16 +107,16 @@ public class MainController {
     }
 
     @GetMapping("/deleteBook/{id}")
-    public String deleteBook(@PathVariable (value = "id") long id) {
+    public String deleteBook(@PathVariable(value = "id") long id) {
         this.bookService.deleteBookById(id);
         return "redirect:/";
     }
 
     @GetMapping("/page/{pageNo}")
-    public String pager(@PathVariable (value = "pageNo") int pageNo, Model model) {
+    public String pager(@PathVariable(value = "pageNo") int pageNo, Model model) {
         int pageSize = 50;
 
-        Page<Book> page = bookService.pager(pageNo, pageSize);
+        Page<Book> page = bookService.page(pageNo, pageSize);
         List<Book> listBooks = page.getContent();
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());

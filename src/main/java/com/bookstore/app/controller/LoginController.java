@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 
 @Controller
-public class AdminController {
+public class LoginController {
 
     @RequestMapping(value = {"/accountInfo"}, method = RequestMethod.GET)
     public String accountInfo(Model model) {

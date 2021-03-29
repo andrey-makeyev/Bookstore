@@ -1,22 +1,31 @@
 package com.bookstore.app.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 
 import com.bookstore.app.model.Book;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface BookService {
-    List<Book> getAllBooks();
 
-    void saveBook(Book book);
+    List<Book> findByOrderByIdDesc();
 
     Book getBookById(long id);
 
     void deleteBookById(long id);
 
-    Page<Book> pager(int pageNo, int pageSize);
+    void saveBook(long id, MultipartFile file,
+                  String isbn,
+                  String title,
+                  String author,
+                  Integer year,
+                  String publisher,
+                  String description,
+                  BigDecimal price);
+
+    Page<Book> page(int pageNo, int pageSize);
+
 }
 

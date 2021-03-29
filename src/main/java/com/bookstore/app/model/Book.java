@@ -1,13 +1,9 @@
 package com.bookstore.app.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "books")
@@ -17,6 +13,10 @@ public class Book implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private long id;
+
+    @Column(name = "isbn")
+    @NotBlank(message = "Required!")
+    private String isbn;
 
     @Column(name = "title")
     @NotBlank(message = "Required!")
@@ -41,12 +41,28 @@ public class Book implements Serializable {
     @NotBlank(message = "Required!")
     private String description;
 
+    @Column(name = "price")
+    @NotNull(message = "Required!")
+    private BigDecimal price;
+
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB", name = "image", nullable = true)
+    private String image;
+
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getTitle() {
@@ -87,6 +103,35 @@ public class Book implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    @Override
+    public String toString() {
+        return "Product [id=" + id + ", " +
+                "isbn=" + isbn + ", " +
+                "title=" + title + ", " +
+                "author=" + author + ", " +
+                "publisher=" + publisher + ", " +
+                "year=" + year + ", " +
+                "description=" + description + ", " +
+                "price=" + price + ", " +
+                "image=" + image + "]";
     }
 
 }

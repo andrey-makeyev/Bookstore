@@ -6,26 +6,44 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
-
-<div class="container">
-    <header th:insert="blocks/header :: header"></header>
-    <h1>Book Detals</h1>
-    <hr class="featurette-divider">
-    <div th:each="element : ${book}" class="alert alert-info mt-2">
-        Title: <h5 th:text="${element.title}"></h5>
-        Author: <h5 th:text="${element.author}"></h5>
-        Publiher:<h5 th:text="${element.publisher}"></h5>
-        Year:<h5 th:text="${element.year}"></h5>
-        Description:<h5 th:text="${element.description}"></h5>
-        <br>
-        <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-            <td><a th:href="@{/viewEditForm/{id}(id=${element.id})}" class="btn btn-outline-warning">Edit</a>
-                <a th:href="@{/deleteBook/{id}(id=${element.id})}" class="btn btn-outline-danger">Delete</a>
-            </td>
-        </th:block>
+<header th:insert="blocks/header :: header"></header>
+<div th:class="container" th:background-color="white">
+    <div class="ibox-content">
+        <div class="row">
+            <h2 class="font-bold m-b-xs">Desktop publishing software</h2>
+            <h1>Book Detals</h1>
+            <hr class="featurette-divider">
+            <div th:each="element : ${book}" class="alert alert-info mt-2">
+                <th scope="row"><img alt=""
+                                     th:src="*{'data:image/jpeg;data:image/jpg;data:image/png;data:image/gif;base64,'+{element.image}}"
+                                     style="width: 300px;height: 300px;"></th>
+                <hr>
+                <div class="m-t-md">
+                    <h2 class="product-main-price">
+                        EUR <small class="text-muted" th:text="${element.price}">Price</small>
+                    </h2>
+                    <hr>
+                    <dl th:class="text-muted">
+                        <dt>Title: <h5 th:text="${element.title}"></h5></dt>
+                        <dt>Author: <h5 th:text="${element.author}"></h5></dt>
+                        <dt>Year:<h5 th:text="${element.year}"></h5></dt>
+                        <dt>Description:<h5 th:text="${element.description}"></h5></dt>
+                        <dt>Publiher:<h5 th:text="${element.publisher}"></h5></dt>
+                        <dt>ISBN: <h5 th:text="${element.isbn}"></h5></dt>
+                    </dl>
+                    <br>
+                    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                        <td><a th:href="@{/viewEditForm/{id}(id=${element.id})}"
+                               class="btn btn-outline-warning">Edit</a>
+                            <a th:href="@{/deleteBook/{id}(id=${element.id})}" class="btn btn-outline-danger">Delete</a>
+                        </td>
+                    </th:block>
+                </div>
+                <hr>
+                <a th:href="@{/}"> Back to Book List</a>
+            </div>
+        </div>
     </div>
-    <hr>
-    <a th:href="@{/}"> Back to Book List</a>
 </div>
 
 <footer th:insert="blocks/footer :: footer"></footer>

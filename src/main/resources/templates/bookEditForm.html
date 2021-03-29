@@ -14,10 +14,14 @@
     <h2>Edit Book</h2>
 
     <form action="#" th:action="@{/saveBook}" th:object="${book}"
-          method="POST">
+          method="POST" enctype="multipart/form-data">
 
-        <!-- Add hidden form field to handle update -->
         <input type="hidden" th:field="*{id}"/>
+
+        <input type="text" th:field="*{isbn}"
+               placeholder="Book ISBN" class="form-control mb-4 col-4">
+        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('isbn')}"
+              th:errors="*{isbn}"></span><br>
 
         <input type="text" th:field="*{title}"
                placeholder="Book Title" class="form-control mb-4 col-4">
@@ -42,6 +46,17 @@
                   placeholder="Book Year" class="form-control mb-4 col-4"></textarea>
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('description')}"
               th:errors="*{description}"></span><br>
+
+        <input type="text" th:field="*{price}"
+               placeholder="Book Price" class="form-control mb-4 col-4">
+        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('price')}"
+              th:errors="*{price}"></span><br>
+
+        <div class="custom-file mb-4">
+            <input type="file" name="file" class="custom-file-input"
+                   id="customFile"> <label class="custom-file-label"
+                                           for="customFile">Book Image</label>
+        </div>
 
         <button type="submit" class="btn btn-outline-success col-2"> Update Book</button>
     </form>
