@@ -7,4 +7,4 @@ Thymeleaf
 MariaDB
 Hibernate
 
-![alt text](https://github.com/andrey-makeyev/Bookstore/blob/master/Screenshot.png?raw=true)
+![alt text](https://github.com/andrey-makeyev/Bookstore/blob/master/src/main/resources/static/img/Screenshot.png?raw=true)
