@@ -6,3 +6,5 @@ Maven
 Thymeleaf
 MariaDB
 Hibernate
+
+![alt text](https://github.com/andrey-makeyev/Bookstore/blob/master/Screenshot.png?raw=true)
