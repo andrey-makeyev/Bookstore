@@ -11,16 +11,8 @@
     <th:block sec:authorize="isAuthenticated()">
         <hr>
         <div>Bookstore - Account Info</div>
-        <div>
-            <ul>
-                <li>User Name: <span th:utext="${#request.userPrincipal.name}"></span></li>
-                <li>
-                    Role:
-                    <ul>
-                        <li th:each="auth : ${userDetails.authorities}" th:utext="${auth.authority}"></li>
-                    </ul>
-                </li>
-            </ul>
+        <div class="alert alert-success">
+            <strong>Bookstore Administrator.</strong> Hello <span th:utext="${#request.userPrincipal.name}"/>
         </div>
     </th:block>
     <footer th:insert="blocks/footer :: footer"></footer>

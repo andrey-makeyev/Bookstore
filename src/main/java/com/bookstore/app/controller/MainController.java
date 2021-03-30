@@ -43,13 +43,6 @@ public class MainController {
         return pager(1, model);
     }
 
-    @GetMapping("/viewLoginForm")
-    public String viewLoginForm(Model model) {
-        Book book = new Book();
-        model.addAttribute("book", book);
-        return "loginForm";
-    }
-
     @GetMapping("/viewBookDetails/{id}")
     public String viewBookDetails(@PathVariable(value = "id") long id, Model model) {
         Optional<Book> book = bookRepository.findById(id);
@@ -124,5 +117,16 @@ public class MainController {
         model.addAttribute("listBooks", listBooks);
 
         return "index";
+    }
+
+    @RequestMapping(value = {"/accountInfo"}, method = RequestMethod.GET)
+    public String accountInfo(Model model) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(userDetails.getPassword());
+        System.out.println(userDetails.getUsername());
+        System.out.println(userDetails.isEnabled());
+
+        model.addAttribute("userDetails", userDetails);
+        return "accountInfo";
     }
 }

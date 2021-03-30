@@ -16,10 +16,10 @@
     <h2>Login for Administrator</h2>
     <div>
         <br>
-        <th:block th:if="${#session != null && #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}">
+   <!--    <th:block th:if="${#session != null && #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}">
             <div th:if="${#request.getParameter('error') == 'true'}"
                  style="color: red; margin: 10px 0px;">
-                Login Failed!<br/> Reason:
+                Login failed!<br/> Reason:
                 <span th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}"></span>
             </div>
         </th:block>
@@ -27,7 +27,8 @@
             <div class="card">
                 <div class="card-body">
                     <form method="POST"
-                          th:action="@{/j_spring_security_check}" autocomplete="off">
+                      th:action="@{/j_spring_security_check}" autocomplete="off">
+
                         <div class="form-group">
                             <input type="text" placeholder="User Name" class="form-control" name="userName">
                         </div>
@@ -39,7 +40,40 @@
                 </div>
             </div>
         </div>
+    </div> -->
+
+    <div class="login-form">
+        <form action="#" th:action="@{/j_spring_security_check}" th:object="${loginForm}"
+              method="post">
+            <h2 class="text-center">Sign in</h2>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-user"></i></span> <input
+                        type="text" class="form-control" th:field="*{userName}"
+                        placeholder="UserName" />
+
+                </div>
+                <span class="red" th:if="${#fields.hasErrors('userName')}"
+                      th:errors="*{userName}"></span>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-lock"></i></span> <input
+                        type="password" class="form-control" th:field="*{password}"
+                        placeholder="Password" />
+
+                </div>
+                <span class="red" th:if="${#fields.hasErrors('password')}"
+                      th:errors="*{password}"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary login-btn btn-block">Sign
+                    in</button>
+            </div>
+        </form>
     </div>
+
+
     <hr>
     <a th:href="@{/}"> Back to Book List</a>
 </div>
