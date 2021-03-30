@@ -2,14 +2,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Bookstore - Edit Book</title>
+    <title>Bookstore Administration Panel - Edit Book</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 
 </head>
 <body>
 <div class="container">
     <header th:insert="blocks/header :: header"></header>
-    <h1>Bookstore</h1>
+    <br>
+    <br>
+    <br>
+    <h1>Bookstore Administration Panel</h1>
     <hr>
     <h2>Edit Book</h2>
 
@@ -61,9 +64,11 @@
         <button type="submit" class="btn btn-outline-success col-2"> Update Book</button>
     </form>
 
-    <hr>
+    <br>
     <a th:href="@{/}"> Back to Book List</a>
 </div>
+<br>
+<hr>
 
 <footer th:insert="blocks/footer :: footer"></footer>
 </body>

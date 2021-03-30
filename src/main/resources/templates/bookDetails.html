@@ -6,14 +6,22 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
-<div class="container my-2">
+<div class="container">
     <header th:insert="blocks/header :: header"></header>
-    <div class="ibox-content">
-        <div class="row">
-            <h2 class="font-bold m-b-xs">Desktop publishing software</h2>
-            <h1>Book Detals</h1>
+    <th:block sec:authorize="!isAuthenticated()">
+        <h1>Bookstore</h1>
+    </th:block>
+    <th:block sec:authorize="isAuthenticated()">
+        <h1>Bookstore Administration Panel</h1>
+    </th:block>
+    <hr>
+    <br>
+    <h2>Book Details</h2>
+
+        <br>
+        <div>
             <hr class="featurette-divider">
-            <div th:each="element : ${book}" class="alert alert-info mt-2">
+            <div th:each="element : ${book}">
                 <th scope="row"><img alt=""
                                      th:src="*{'data:image/jpeg;data:image/jpg;data:image/png;data:image/gif;base64,'+{element.image}}"
                                      style="width: 300px;height: 300px;"></th>
@@ -39,12 +47,14 @@
                         </td>
                     </th:block>
                 </div>
-                <hr>
-                <a th:href="@{/}"> Back to Book List</a>
             </div>
         </div>
-    </div>
+    <br>
+    <a th:href="@{/}"> Back to Book List</a>
+    <br>
+    <hr>
 </div>
+
 
 <footer th:insert="blocks/footer :: footer"></footer>
 </body>

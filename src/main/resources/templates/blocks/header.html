@@ -11,37 +11,28 @@
         <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
 
     </head>
-
     <body>
-    <nav class="navbar navbar-expand navbar-light fixed-top bg-light">
-        <a class="navbar-brand" href="/">Bookstore</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+    <nav class="navbar fixed-top navbar-expand-md custom-navbar navbar-dark">
+        <a class="navbar-brand" th:href="@{/}" ><b>Bookstore</b></a>
+        <button class="navbar-toggler navbar-toggler-right custom-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon "></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mx-auto">
-                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-                    <div>
-                        <th:block sec:authorize="isAuthenticated()">
-                            Hello
-                            <a th:href="@{/accountInfo}" th:utext="${#request.userPrincipal.name}">..</a>
-                            &nbsp;|&nbsp;
-                            <a th:href="@{/accountLogout}">Logout</a>
-                        </th:block>
-
-                        <th:block sec:authorize="!isAuthenticated()">
-                            <a th:class="align-content-center" th:href="@{/}">Login</a>
-                        </th:block>
-                    </div>
+        <div class="collapse navbar-collapse " id="collapsibleNavbar">
+            <ul class="navbar-nav ml-auto ">
+                <th:block sec:authorize="isAuthenticated()">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/accountInfo}" th:utext="${#request.userPrincipal.name}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/accountLogout}"><b>Sign out</b></a>
+                </li>
+                </th:block>
+                <th:block sec:authorize="!isAuthenticated()">
+                <li class="nav-item">
+                    <a class="nav-link"th:href="@{/viewLoginForm}"><b>Sign in</b></a>
+                </li>
                 </th:block>
             </ul>
-            <ul>
-
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <a class="nav-link" href="/viewLoginForm">Login <span class="sr-only">(current)</span></a>
-            </form>
         </div>
     </nav>
     </body>

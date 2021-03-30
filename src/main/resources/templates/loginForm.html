@@ -10,11 +10,14 @@
 
 <div class="container">
     <header th:insert="blocks/header :: header"></header>
+    <br>
+    <br>
+    <br>
     <h1>Bookstore</h1>
     <hr>
     <br>
-    <h2>Login for Administrator</h2>
-    <div>
+    <h2>Bookstore Administration Panel</h2>
+
         <br>
    <!--    <th:block th:if="${#session != null && #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}">
             <div th:if="${#request.getParameter('error') == 'true'}"
@@ -39,9 +42,7 @@
                     </form>
                 </div>
             </div>
-        </div>
-    </div> -->
-
+        </div> -->
     <div class="login-form">
         <form action="#" th:action="@{/j_spring_security_check}" th:object="${loginForm}"
               method="post">
@@ -72,12 +73,13 @@
             </div>
         </form>
     </div>
-
-
-    <hr>
+    <br>
     <a th:href="@{/}"> Back to Book List</a>
 </div>
+<br>
+<hr>
 
 <footer th:insert="blocks/footer :: footer"></footer>
 </body>
+
 </html>
