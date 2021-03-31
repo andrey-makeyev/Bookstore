@@ -6,6 +6,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
+//import com.bookstore.app.form.BookForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,8 +17,19 @@ import com.bookstore.app.repository.BookRepository;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
+
 @Service
 public class BookServiceImpl implements BookService {
+
+    private MultipartFile imageFile;
+
+    public MultipartFile getImageFile() {
+        return imageFile;
+    }
+    public void setImageFile(MultipartFile imageFile) {
+        this.imageFile = imageFile;
+    }
 
     @Autowired
     protected BookRepository bookRepository;
@@ -27,8 +39,10 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
-    @Override
-    public void saveBook(long id, MultipartFile file,
+     @Override
+     @Transactional
+    /* public void saveBook(BookForm bookForm) { ... } */
+    public void saveBook(long id, MultipartFile imageFile,
                          String isbn,
                          String title,
                          String author,
@@ -38,26 +52,38 @@ public class BookServiceImpl implements BookService {
                          BigDecimal price) {
 
         Book b = new Book();
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        /* String fileName = StringUtils.cleanPath(bookForm.getImageFile().getOriginalFilename()); */
+         String fileName = StringUtils.cleanPath(imageFile.getOriginalFilename());
         if (fileName.contains("..")) {
             System.out.println("file is invalid");
         }
         try {
-            b.setImage(Base64.getEncoder().encodeToString(file.getBytes()));
+          /*  b.setImage(Base64.getEncoder().encodeToString(bookForm.getImageFile().getBytes())); */
+            b.setImage(Base64.getEncoder().encodeToString(imageFile.getBytes()));
+
+          /*  b.setId(book.getId());
+            b.setIsbn(bookForm.getIsbn());
+            b.setTitle(bookForm.getTitle());
+            b.setAuthor(bookForm.getAuthor());
+            b.setYear(bookForm.getYear());
+            b.setPublisher(bookForm.getPublisher());
+            b.setDescription(bookForm.getDescription());
+            b.setPrice(bookForm.getPrice()); */
+
+            b.setId(id);
+            b.setIsbn(isbn);
+            b.setTitle(title);
+            b.setAuthor(author);
+            b.setYear(year);
+            b.setPublisher(publisher);
+            b.setDescription(description);
+            b.setPrice(price);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        b.setId(id);
-        b.setIsbn(isbn);
-        b.setTitle(title);
-        b.setAuthor(author);
-        b.setYear(year);
-        b.setPublisher(publisher);
-        b.setDescription(description);
-        b.setPrice(price);
 
         this.bookRepository.save(b);
-
     }
 
     @Override

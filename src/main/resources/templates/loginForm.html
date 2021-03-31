@@ -16,12 +16,12 @@
     <h1>Bookstore</h1>
     <hr>
     <br>
-    <h2>Bookstore Administration Panel</h2>
+    <h6>Bookstore Administration Panel</h6>
         <br>
       <th:block th:if="${#session != null && #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}">
          <div th:if="${#request.getParameter('error') == 'true'}"
-              style="color: red; margin: 10px 0px;">
-             <b>Login failed!</b><br/> <b>Reason:</b>
+              style="color: red; margin: 10px 0px; text-align: center">
+             <b>Login failed!</b><br/>
              <span th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}"></span>
          </div>
      </th:block>

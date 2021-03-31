@@ -3,8 +3,8 @@ package com.bookstore.app.service;
 import java.math.BigDecimal;
 import java.util.List;
 
+//import com.bookstore.app.form.BookForm;
 import org.springframework.data.domain.Page;
-
 import com.bookstore.app.model.Book;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +16,9 @@ public interface BookService {
 
     void deleteBookById(long id);
 
-    void saveBook(long id, MultipartFile file,
+    /* void saveBook(BookForm bookForm); */
+
+    void saveBook(long id, MultipartFile imageFile,
                   String isbn,
                   String title,
                   String author,
@@ -26,6 +28,5 @@ public interface BookService {
                   BigDecimal price);
 
     Page<Book> page(int pageNo, int pageSize);
-
 }
 

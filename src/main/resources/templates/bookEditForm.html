@@ -17,46 +17,47 @@
     <h2>Edit Book</h2>
 
     <form action="#" th:action="@{/saveBook}" th:object="${book}"
-          method="POST" enctype="multipart/form-data">
+          method="POST" enctype="multipart/form-data" th:modelAttribute="book">
 
         <input type="hidden" th:field="*{id}"/>
 
-        <input type="text" th:field="*{isbn}"
+        <input type="text" th:field="*{isbn}" th:modelAttribute="isbn"
                placeholder="Book ISBN" class="form-control mb-4 col-4">
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('isbn')}"
               th:errors="*{isbn}"></span><br>
 
-        <input type="text" th:field="*{title}"
+        <input type="text" th:field="*{title}" th:modelAttribute="title"
                placeholder="Book Title" class="form-control mb-4 col-4">
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('title')}"
               th:errors="*{title}"></span><br>
 
-        <input type="text" th:field="*{author}"
+        <input type="text" th:field="*{author}" th:modelAttribute="author"
                placeholder="Book Author" class="form-control mb-4 col-4">
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('author')}"
               th:errors="*{author}"></span><br>
 
-        <input type="text" th:field="*{publisher}"
+        <input type="text" th:field="*{publisher}" th:modelAttribute="publisher"
                placeholder="Book Publisher" class="form-control mb-4 col-4">
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('publisher')}"
               th:errors="*{publisher}"></span><br>
 
-        <input type="text" th:field="*{year}"
+        <input type="text" th:field="*{year}" th:modelAttribute="year"
                placeholder="Book Year" class="form-control mb-4 col-4">
-        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span><br>
+        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('year')}"
+              th:errors="*{year}"></span><br>
 
-        <textarea type="text" th:field="*{description}"
-                  placeholder="Book Year" class="form-control mb-4 col-4"></textarea>
+        <textarea type="text" th:field="*{description}" th:modelAttribute="description"
+                  placeholder="Book Description" class="form-control mb-4 col-4"></textarea>
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('description')}"
               th:errors="*{description}"></span><br>
 
-        <input type="text" th:field="*{price}"
+        <input type="text" th:field="*{price}" th:modelAttribute="price"
                placeholder="Book Price" class="form-control mb-4 col-4">
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('price')}"
               th:errors="*{price}"></span><br>
 
         <div class="custom-file mb-4">
-            <input type="file" name="file" class="custom-file-input"
+            <input type="file" th:modelAttribute="imageFile" name="imageFile" class="custom-file-input"
                    id="customFile"> <label class="custom-file-label"
                                            for="customFile">Book Image</label>
         </div>

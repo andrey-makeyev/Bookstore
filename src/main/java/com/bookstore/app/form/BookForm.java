@@ -1,56 +1,51 @@
-package com.bookstore.app.model;
-
-import javax.persistence.*;
+//package com.bookstore.app.form;
+/*
+import com.bookstore.app.model.Book;
+import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "books")
-public class Book implements Serializable {
+public class BookForm {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private MultipartFile imageFile;
+
+    public BookForm(Book book) {
+        this.id = book.getId();
+        this.isbn = book.getIsbn();
+        this.title = book.getTitle();
+        this.author = book.getAuthor();
+        this.publisher = book.getPublisher();
+        this.year = book.getYear();
+        this.description = book.getDescription();
+        this.price = book.getPrice();
+        this.imageFile = getImageFile();
+    }
 
     private long id;
 
-    @Column(name = "isbn")
     @NotBlank(message = "Required!")
     private String isbn;
 
-    @Column(name = "title")
     @NotBlank(message = "Required!")
     private String title;
 
-    @Column(name = "author")
     @NotBlank(message = "Required!")
     private String author;
 
-    @Column(name = "publisher")
     @NotBlank(message = "Required!")
     private String publisher;
 
-    @Column(name = "year")
     @NotNull(message = "Required!")
     @PositiveOrZero(message = "Only positive numbers!")
     @Min(value = 1377, message = "Must be from 1377 till 2021!")
     @Max(value = 2021, message = "Must be from 1377 till 2021!")
     private Integer year;
 
-    @Column(name = "description")
     @NotBlank(message = "Required!")
     private String description;
 
-    @Column(name = "price")
     @NotNull(message = "Required!")
     private BigDecimal price;
-
-    @Lob
-    @Column(columnDefinition = "MEDIUMBLOB", name = "image", nullable = true)
-    private String image;
-
-    public Book() {
-    }
 
     public long getId() {
         return id;
@@ -116,26 +111,13 @@ public class Book implements Serializable {
         this.price = price;
     }
 
-    public String getImage() {
-        return image;
+    public MultipartFile getImageFile() {
+        return imageFile;
     }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    @Override
-    public String toString() {
-        return "Book [id=" + id + ", " +
-                "isbn=" + isbn + ", " +
-                "title=" + title + ", " +
-                "author=" + author + ", " +
-                "publisher=" + publisher + ", " +
-                "year=" + year + ", " +
-                "description=" + description + ", " +
-                "price=" + price + ", " +
-                "image=" + image + "]";
+    public void setImageFile(MultipartFile imageFile) {
+        this.imageFile = imageFile;
     }
 
 }
-
+*/

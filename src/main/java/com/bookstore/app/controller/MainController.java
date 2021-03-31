@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+//import com.bookstore.app.form.BookForm;
 import com.bookstore.app.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,13 +13,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.bookstore.app.model.Book;
 import com.bookstore.app.service.BookService;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+
 @Controller
-public class MainController {
+@Validated
+public class MainController{
 
     @Autowired
     private BookService bookService;
@@ -57,31 +65,44 @@ public class MainController {
         return "bookRegisterForm";
     }
 
+    /*
     @PostMapping("/saveBook")
-    public String saveBook(int id, @RequestParam("file") MultipartFile file,
+    public String saveBook(@ModelAttribute @Valid BookForm bookForm, Errors errors, Model model) {
+        if (errors.hasErrors()) {
+            model.addAttribute("bookForm", bookForm);
+            return "bookRegisterForm";
+        } else {
+            bookService.saveBook(bookForm);
+        }
+        return "index";
+    }
+    */
+
+
+    @PostMapping("/saveBook")
+    public String saveBook(long id,
+                           @ModelAttribute @Valid Book book,
+                           @RequestParam("imageFile") MultipartFile imageFile ,
                            @RequestParam("isbn") String isbn,
                            @RequestParam("title") String title,
                            @RequestParam("author") String author,
                            @RequestParam("year") Integer year,
                            @RequestParam("publisher") String publisher,
                            @RequestParam("description") String description,
-                           @RequestParam("price") BigDecimal price
-    ) /* Errors errors */ {
-                               /*
+                           @RequestParam("price") BigDecimal price,
+                           Errors errors, Model model)
+    {
         if (errors.hasErrors()) {
+            model.addAttribute("book", book);
             return "bookRegisterForm";
         } else {
             try {
-                bookService.saveBook(file, isbn, title, author, year, publisher, description, price);
+                bookService.saveBook(id, imageFile, isbn, title, author, year, publisher, description, price);
             } catch (Exception e) {
-                return "redirect:/";
+                return "bookRegisterForm";
             }
             return "redirect:/";
         }
-    }
-    */
-        bookService.saveBook(id, file, isbn, title, author, year, publisher, description, price);
-        return "redirect:/";
     }
 
     @RequestMapping(value = {"/viewEditForm/{id}"}, method = RequestMethod.GET)
