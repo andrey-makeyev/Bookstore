@@ -17,64 +17,46 @@
     <hr>
     <br>
     <h2>Bookstore Administration Panel</h2>
-
         <br>
-   <!--    <th:block th:if="${#session != null && #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}">
-            <div th:if="${#request.getParameter('error') == 'true'}"
-                 style="color: red; margin: 10px 0px;">
-                Login failed!<br/> Reason:
-                <span th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}"></span>
-            </div>
-        </th:block>
-        <div class="col-4">
-            <div class="card">
-                <div class="card-body">
-                    <form method="POST"
-                      th:action="@{/j_spring_security_check}" autocomplete="off">
+      <th:block th:if="${#session != null && #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}">
+         <div th:if="${#request.getParameter('error') == 'true'}"
+              style="color: red; margin: 10px 0px;">
+             <b>Login failed!</b><br/> <b>Reason:</b>
+             <span th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}"></span>
+         </div>
+     </th:block>
 
-                        <div class="form-group">
-                            <input type="text" placeholder="User Name" class="form-control" name="userName">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" placeholder="Password" class="form-control" name="password">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Login</button>
-                    </form>
-                </div>
-            </div>
-        </div> -->
-    <div class="login-form">
-        <form action="#" th:action="@{/j_spring_security_check}" th:object="${loginForm}"
-              method="post">
-            <h2 class="text-center">Sign in</h2>
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-user"></i></span> <input
-                        type="text" class="form-control" th:field="*{userName}"
-                        placeholder="UserName" />
+ <div class="login-form">
+     <form action="#" th:action="@{/j_spring_security_check}" th:object="${loginForm}"
+           method="post">
+         <h2 class="text-center">Sign in</h2>
+         <div class="form-group">
+             <div class="input-group">
+                 <span class="input-group-addon"><i class="fa fa-user"></i></span> <input
+                     type="text" class="form-control" th:field="*{userName}"
+                     placeholder="UserName" />
+             </div>
+             <span class="red" th:if="${#fields.hasErrors('userName')}"
+                   th:errors="*{userName}"></span>
+         </div>
+         <div class="form-group">
+             <div class="input-group">
+                 <span class="input-group-addon"><i class="fa fa-lock"></i></span> <input
+                     type="password" class="form-control" th:field="*{password}"
+                     placeholder="Password" />
 
-                </div>
-                <span class="red" th:if="${#fields.hasErrors('userName')}"
-                      th:errors="*{userName}"></span>
-            </div>
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-lock"></i></span> <input
-                        type="password" class="form-control" th:field="*{password}"
-                        placeholder="Password" />
-
-                </div>
-                <span class="red" th:if="${#fields.hasErrors('password')}"
-                      th:errors="*{password}"></span>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary login-btn btn-block">Sign
-                    in</button>
-            </div>
-        </form>
-    </div>
-    <br>
-    <a th:href="@{/}"> Back to Book List</a>
+             </div>
+             <span class="red" th:if="${#fields.hasErrors('password')}"
+                   th:errors="*{password}"></span>
+         </div>
+         <div class="form-group">
+             <button type="submit" class="btn btn-primary login-btn btn-block">Sign
+                 in</button>
+         </div>
+     </form>
+ </div>
+ <br>
+ <a th:href="@{/}"> Back to Book List</a>
 </div>
 <br>
 <hr>

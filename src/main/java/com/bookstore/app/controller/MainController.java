@@ -17,8 +17,6 @@ import com.bookstore.app.model.Book;
 import com.bookstore.app.service.BookService;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
-
 @Controller
 public class MainController {
 

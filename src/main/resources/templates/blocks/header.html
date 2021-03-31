@@ -24,12 +24,12 @@
                     <a class="nav-link" th:href="@{/accountInfo}" th:utext="${#request.userPrincipal.name}"></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/accountLogout}"><b>Sign out</b></a>
+                    <a class="nav-link" th:href="@{/logout}"><b>Sign out</b></a>
                 </li>
                 </th:block>
                 <th:block sec:authorize="!isAuthenticated()">
                 <li class="nav-item">
-                    <a class="nav-link"th:href="@{/viewLoginForm}"><b>Sign in</b></a>
+                    <a class="nav-link"th:href="@{/login}"><b>Sign in</b></a>
                 </li>
                 </th:block>
             </ul>
