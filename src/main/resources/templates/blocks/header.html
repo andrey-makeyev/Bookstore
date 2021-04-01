@@ -13,24 +13,25 @@
     </head>
     <body>
     <nav class="navbar fixed-top navbar-expand-md custom-navbar navbar-dark">
-        <a class="navbar-brand" th:href="@{/}" ><b>Bookstore</b></a>
-        <button class="navbar-toggler navbar-toggler-right custom-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <a class="navbar-brand" th:href="@{/}"><b>Bookstore</b></a>
+        <button class="navbar-toggler navbar-toggler-right custom-toggler" type="button" data-toggle="collapse"
+                data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon "></span>
         </button>
         <div class="collapse navbar-collapse " id="collapsibleNavbar">
             <ul class="navbar-nav ml-auto ">
                 <th:block sec:authorize="isAuthenticated()">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/accountInfo}" th:utext="${#request.userPrincipal.name}"></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/logout}"><b>Sign out</b></a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/accountInfo}" th:utext="${#request.userPrincipal.name}"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/logout}"><b>Sign out</b></a>
+                    </li>
                 </th:block>
                 <th:block sec:authorize="!isAuthenticated()">
-                <li class="nav-item">
-                    <a class="nav-link"th:href="@{/login}"><b>Sign in</b></a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/login}"><b>Sign in</b></a>
+                    </li>
                 </th:block>
             </ul>
         </div>

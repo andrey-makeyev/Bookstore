@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.*;
 import com.bookstore.app.model.Book;
 import com.bookstore.app.service.BookService;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.Valid;
 
 @Controller
-public class MainController{
+public class MainController {
 
     @Autowired
     private BookService bookService;
@@ -44,6 +45,29 @@ public class MainController{
         return pager(1, model);
     }
 
+    @RequestMapping(value = {"/accountInfo"}, method = RequestMethod.GET)
+    public String accountInfo(Model model) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(userDetails.getPassword());
+        System.out.println(userDetails.getUsername());
+        System.out.println(userDetails.isEnabled());
+
+        model.addAttribute("userDetails", userDetails);
+        return "accountInfo";
+    }
+
+    @GetMapping("/page/{pageNo}")
+    public String pager(@PathVariable(value = "pageNo") int pageNo, Model model) {
+        int pageSize = 50;
+        Page<Book> page = bookService.page(pageNo, pageSize);
+        List<Book> listBooks = page.getContent();
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalBooks", page.getTotalElements());
+        model.addAttribute("listBooks", listBooks);
+        return "index";
+    }
+
     @GetMapping("/viewBookDetails/{id}")
     public String viewBookDetails(@PathVariable(value = "id") long id, Model model) {
         Optional<Book> book = bookRepository.findById(id);
@@ -59,6 +83,7 @@ public class MainController{
         model.addAttribute("book", book);
         return "bookRegisterForm";
     }
+
     /*
     @PostMapping("/saveBook")
     public String saveBook(@ModelAttribute @Valid BookForm bookForm, Errors errors, Model model) {
@@ -81,9 +106,9 @@ public class MainController{
         } else {
 
             try {
-                if(!imageFile.isEmpty()){
-                modelMap.addAttribute("imageFile", imageFile);
-                bookService.saveImageFile(imageFile);
+                if (!imageFile.isEmpty()) {
+                    modelMap.addAttribute("imageFile", imageFile);
+                    bookService.saveImageFile(imageFile);
                 }
                 bookRepository.save(book);
             } catch (Exception e) {
@@ -101,40 +126,39 @@ public class MainController{
         System.out.println(userDetails.getPassword());
         System.out.println(userDetails.getUsername());
         System.out.println(userDetails.isEnabled());
-
         Book book = bookService.getBookById(id);
         model.addAttribute("book", book);
         return "bookEditForm";
+    }
+
+    private Object Null;
+
+    @PostMapping("/viewEditForm/{id}")
+    public String updateBook(@PathVariable(value = "id") long id,
+                             @RequestParam("imageFile") MultipartFile imageFile, ModelMap modelMap,
+                             @ModelAttribute("book") @Valid Book book, BindingResult bindingResult, Model model, Errors errors) {
+        bookRepository.findById(id).orElse((Book) Null);
+        if (errors.hasErrors()) {
+            model.addAttribute("book", book);
+            return "bookEditForm";
+        } else {
+            try {
+                if (!imageFile.isEmpty()) {
+                    modelMap.addAttribute("imageFile", imageFile);
+                    bookService.saveImageFile(imageFile);
+                }
+                bookRepository.save(book);
+            } catch (Exception e) {
+                System.out.println(e);
+                return "bookEditForm";
+            }
+            return "redirect:/";
+        }
     }
 
     @GetMapping("/deleteBook/{id}")
     public String deleteBook(@PathVariable(value = "id") long id) {
         this.bookService.deleteBookById(id);
         return "redirect:/";
-    }
-
-    @GetMapping("/page/{pageNo}")
-    public String pager(@PathVariable(value = "pageNo") int pageNo, Model model) {
-        int pageSize = 50;
-
-        Page<Book> page = bookService.page(pageNo, pageSize);
-        List<Book> listBooks = page.getContent();
-        model.addAttribute("currentPage", pageNo);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("totalBooks", page.getTotalElements());
-        model.addAttribute("listBooks", listBooks);
-
-        return "index";
-    }
-
-    @RequestMapping(value = {"/accountInfo"}, method = RequestMethod.GET)
-    public String accountInfo(Model model) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(userDetails.getPassword());
-        System.out.println(userDetails.getUsername());
-        System.out.println(userDetails.isEnabled());
-
-        model.addAttribute("userDetails", userDetails);
-        return "accountInfo";
     }
 }

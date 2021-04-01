@@ -11,8 +11,8 @@
     <br>
     <br>
     <br>
-        <hr>
-        <div>Bookstore - Account Info</div>
+    <hr>
+    <div>Bookstore - Account Info</div>
     <th:block sec:authorize="hasRole('ROLE_ADMIN')">
         <div class="alert alert-success">
             <strong>Bookstore Administrator </strong>| UserName: <span th:utext="${#request.userPrincipal.name}"/>

@@ -15,55 +15,38 @@
     <h1>Bookstore Administration Panel</h1>
     <hr>
     <h2>Edit Book</h2>
-
-    <form action="#" th:action="@{/saveBook}" th:object="${book}"
-          method="POST" enctype="multipart/form-data" th:modelAttribute="book">
-
-        <input type="hidden" th:field="*{id}"/>
-
-        <input type="text" th:field="*{isbn}" th:modelAttribute="isbn"
-               placeholder="Book ISBN" class="form-control mb-4 col-4">
-        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('isbn')}"
-              th:errors="*{isbn}"></span><br>
-
-        <input type="text" th:field="*{title}" th:modelAttribute="title"
-               placeholder="Book Title" class="form-control mb-4 col-4">
-        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('title')}"
-              th:errors="*{title}"></span><br>
-
-        <input type="text" th:field="*{author}" th:modelAttribute="author"
-               placeholder="Book Author" class="form-control mb-4 col-4">
-        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('author')}"
-              th:errors="*{author}"></span><br>
-
-        <input type="text" th:field="*{publisher}" th:modelAttribute="publisher"
-               placeholder="Book Publisher" class="form-control mb-4 col-4">
-        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('publisher')}"
-              th:errors="*{publisher}"></span><br>
-
-        <input type="text" th:field="*{year}" th:modelAttribute="year"
-               placeholder="Book Year" class="form-control mb-4 col-4">
-        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('year')}"
-              th:errors="*{year}"></span><br>
-
-        <textarea type="text" th:field="*{description}" th:modelAttribute="description"
-                  placeholder="Book Description" class="form-control mb-4 col-4"></textarea>
-        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('description')}"
-              th:errors="*{description}"></span><br>
-
-        <input type="text" th:field="*{price}" th:modelAttribute="price"
-               placeholder="Book Price" class="form-control mb-4 col-4">
-        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('price')}"
-              th:errors="*{price}"></span><br>
-
-        <div class="custom-file mb-4">
-            <input type="file" th:modelAttribute="imageFile" name="imageFile" class="custom-file-input"
-                   id="customFile"> <label class="custom-file-label"
-                                           for="customFile">Book Image</label>
-        </div>
-
-        <button type="submit" class="btn btn-outline-success col-2"> Update Book</button>
-    </form>
+    <div th:each="element : ${book}">
+        <form action="#" method="post" enctype="multipart/form-data">
+            <h5>Price</h5>
+            <input type="text" th:value="${element.price}" name="price"
+                   placeholder="Book Price" class="form-control mb-4 col-4">
+            <h5>Title</h5>
+            <input type="text" th:value="${element.title}" name="title"
+                   placeholder="Book Title" class="form-control mb-4 col-4">
+            <h5>Year</h5>
+            <input type="text" th:value="${element.year}" name="year"
+                   placeholder="Book Year" class="form-control mb-4 col-4">
+            <h5>Description</h5>
+            <textarea th:text="${element.description}" name="description"
+                      placeholder="Book Description" class="form-control mb-4 col-4"></textarea>
+            <h5>Author</h5>
+            <input type="text" th:value="${element.author}" name="author"
+                   placeholder="Book Author" class="form-control mb-4 col-4">
+            <h5>Publisher</h5>
+            <input type="text" th:value="${element.publisher}" name="publisher"
+                   placeholder="Book Publisher" class="form-control mb-4 col-4">
+            <h5>ISBN</h5>
+            <input type="text" th:value="${element.isbn}" name="isbn"
+                   placeholder="Book ISBN" class="form-control mb-4 col-4">
+            <h5>Change picture</h5>
+            <div class="custom-file mb-4">
+                <input type="file" th:modelAttribute="imageFile" name="imageFile" class="custom-file-input"
+                       id="customFile"> <label class="custom-file-label"
+                                               for="customFile">Book Image</label>
+            </div>
+            <button type="submit" class="btn btn-outline-success col-2"> Update Book</button>
+        </form>
+    </div>
 
     <br>
     <a th:href="@{/}"> Back to Book List</a>
