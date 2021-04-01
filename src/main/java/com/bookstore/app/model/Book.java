@@ -1,12 +1,14 @@
 package com.bookstore.app.model;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "books")
+@Transactional
 public class Book implements Serializable {
 
     @Id

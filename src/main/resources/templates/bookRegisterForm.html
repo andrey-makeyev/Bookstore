@@ -43,7 +43,8 @@
 
         <input type="text" th:field="*{year}" th:modelAttribute="year"
                placeholder="Book Year" class="form-control mb-4 col-4">
-        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></span><br>
+        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('year')}"
+              th:errors="*{year}"></span><br>
 
         <textarea th:field="*{description}" th:modelAttribute="description"
                   placeholder="Description" class="form-control mb-4 col-4"></textarea>

@@ -1,10 +1,8 @@
 package com.bookstore.app.controller;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 //import com.bookstore.app.form.BookForm;
 import com.bookstore.app.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,19 +11,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.bookstore.app.model.Book;
 import com.bookstore.app.service.BookService;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.transaction.Transactional;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 @Controller
-@Validated
 public class MainController{
 
     @Autowired
@@ -64,7 +59,6 @@ public class MainController{
         model.addAttribute("book", book);
         return "bookRegisterForm";
     }
-
     /*
     @PostMapping("/saveBook")
     public String saveBook(@ModelAttribute @Valid BookForm bookForm, Errors errors, Model model) {
@@ -77,28 +71,23 @@ public class MainController{
         return "index";
     }
     */
-
-
     @PostMapping("/saveBook")
-    public String saveBook(long id,
-                           @ModelAttribute @Valid Book book,
-                           @RequestParam("imageFile") MultipartFile imageFile ,
-                           @RequestParam("isbn") String isbn,
-                           @RequestParam("title") String title,
-                           @RequestParam("author") String author,
-                           @RequestParam("year") Integer year,
-                           @RequestParam("publisher") String publisher,
-                           @RequestParam("description") String description,
-                           @RequestParam("price") BigDecimal price,
-                           Errors errors, Model model)
-    {
+    public String saveBook(
+            @RequestParam("imageFile") MultipartFile imageFile, ModelMap modelMap,
+            @ModelAttribute("book") @Valid Book book, BindingResult bindingResult, Model model, Errors errors) {
         if (errors.hasErrors()) {
             model.addAttribute("book", book);
             return "bookRegisterForm";
         } else {
+
             try {
-                bookService.saveBook(id, imageFile, isbn, title, author, year, publisher, description, price);
+                if(!imageFile.isEmpty()){
+                modelMap.addAttribute("imageFile", imageFile);
+                bookService.saveImageFile(imageFile);
+                }
+                bookRepository.save(book);
             } catch (Exception e) {
+                System.out.println(e);
                 return "bookRegisterForm";
             }
             return "redirect:/";

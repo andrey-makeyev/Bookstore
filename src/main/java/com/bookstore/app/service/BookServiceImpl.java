@@ -1,11 +1,10 @@
 package com.bookstore.app.service;
 
+
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
-
 //import com.bookstore.app.form.BookForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,29 +38,13 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 
-     @Override
-     @Transactional
-    /* public void saveBook(BookForm bookForm) { ... } */
-    public void saveBook(long id, MultipartFile imageFile,
-                         String isbn,
-                         String title,
-                         String author,
-                         Integer year,
-                         String publisher,
-                         String description,
-                         BigDecimal price) {
+    /* public void saveBook(BookForm bookForm) { } */
 
-        Book b = new Book();
-        /* String fileName = StringUtils.cleanPath(bookForm.getImageFile().getOriginalFilename()); */
-         String fileName = StringUtils.cleanPath(imageFile.getOriginalFilename());
-        if (fileName.contains("..")) {
-            System.out.println("file is invalid");
-        }
-        try {
-          /*  b.setImage(Base64.getEncoder().encodeToString(bookForm.getImageFile().getBytes())); */
-            b.setImage(Base64.getEncoder().encodeToString(imageFile.getBytes()));
+    /* String fileName = StringUtils.cleanPath(bookForm.getImageFile().getOriginalFilename()); */
 
-          /*  b.setId(book.getId());
+    /*  b.setImage(Base64.getEncoder().encodeToString(bookForm.getImageFile().getBytes())); */
+
+    /*  b.setId(book.getId());
             b.setIsbn(bookForm.getIsbn());
             b.setTitle(bookForm.getTitle());
             b.setAuthor(bookForm.getAuthor());
@@ -70,21 +53,22 @@ public class BookServiceImpl implements BookService {
             b.setDescription(bookForm.getDescription());
             b.setPrice(bookForm.getPrice()); */
 
-            b.setId(id);
-            b.setIsbn(isbn);
-            b.setTitle(title);
-            b.setAuthor(author);
-            b.setYear(year);
-            b.setPublisher(publisher);
-            b.setDescription(description);
-            b.setPrice(price);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+    @Override
+    @Transactional
+    public void saveImageFile(MultipartFile imageFile) {
+        Book b = new Book();
+        String fileName = StringUtils.cleanPath(imageFile.getOriginalFilename());
+        if (fileName.contains("..")) {
+            System.out.println("file is invalid");
         }
+        try {
+            b.setImage(Base64.getEncoder().encodeToString(imageFile.getBytes()));
 
-        this.bookRepository.save(b);
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+        this.bookRepository.save(b);
+}
 
     @Override
     public Book getBookById(long id) {
