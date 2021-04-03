@@ -4,7 +4,6 @@ import com.bookstore.app.model.Book;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class BookForm {

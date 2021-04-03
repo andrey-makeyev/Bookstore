@@ -64,7 +64,6 @@ public class BookController {
     public String viewRegisterForm(Model model) {
         BookForm bookForm = new BookForm();
         model.addAttribute("bookForm", bookForm);
-        // model.addAttribute("bookForm", new BookForm());
         return "bookRegisterForm";
     }
 
