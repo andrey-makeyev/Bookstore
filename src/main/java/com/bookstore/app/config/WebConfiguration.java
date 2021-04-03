@@ -20,7 +20,6 @@ public class WebConfiguration implements WebMvcConfigurer {
     public MethodValidationPostProcessor methodValidationPostProcessor() {
         return new MethodValidationPostProcessor();
     }
-
 }
 
 

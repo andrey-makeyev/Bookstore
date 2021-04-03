@@ -16,7 +16,7 @@
     <hr>
     <h2>Edit Book</h2>
     <div th:each="element : ${book}">
-        <form action="#" method="post" enctype="multipart/form-data">
+        <form action="#" method="post" enctype="multipart/form-data" th:modelAttribute="book">
             <h5>Price</h5>
             <input type="text" th:value="${element.price}" name="price"
                    placeholder="Book Price" class="form-control mb-4 col-4">
@@ -40,7 +40,7 @@
                    placeholder="Book ISBN" class="form-control mb-4 col-4"><br>
             <h5>Change picture</h5>
             <div class="custom-file mb-4">
-                <input type="file" th:modelAttribute="imageFile" name="imageFile" class="custom-file-input"
+                <input type="file" name="imageFile" class="custom-file-input"
                        id="customFile"> <label class="custom-file-label"
                                                for="customFile">Book Image</label>
             </div>

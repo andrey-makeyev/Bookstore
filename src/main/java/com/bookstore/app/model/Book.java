@@ -2,7 +2,6 @@ package com.bookstore.app.model;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -17,34 +16,24 @@ public class Book implements Serializable {
     private long id;
 
     @Column(name = "isbn")
-    @NotBlank(message = "Required!")
     private String isbn;
 
     @Column(name = "title")
-    @NotBlank(message = "Required!")
     private String title;
 
     @Column(name = "author")
-    @NotBlank(message = "Required!")
     private String author;
 
     @Column(name = "publisher")
-    @NotBlank(message = "Required!")
     private String publisher;
 
     @Column(name = "year")
-    @NotNull(message = "Required!")
-    @PositiveOrZero(message = "Only positive numbers!")
-    @Min(value = 1377, message = "Must be from 1377 till 2021!")
-    @Max(value = 2021, message = "Must be from 1377 till 2021!")
     private Integer year;
 
     @Column(name = "description")
-    @NotBlank(message = "Required!")
     private String description;
 
     @Column(name = "price")
-    @NotNull(message = "Required!")
     private BigDecimal price;
 
     @Lob
@@ -138,6 +127,5 @@ public class Book implements Serializable {
                 "price=" + price + ", " +
                 "image=" + image + "]";
     }
-
 }
 

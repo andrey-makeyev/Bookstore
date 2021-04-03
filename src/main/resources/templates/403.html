@@ -8,10 +8,24 @@
 
 <body>
 <header th:insert="blocks/header :: header"></header>
-<div>Access Denied!</div>
-<h3 style="color:red;">Sorry, you can not access this page!</h3>
 
-<a th:href="@{/}"> Back to Book List</a>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h2>:(</h2>
+                <div class="error-details">
+                    Access denied!
+                </div>
+                <div class="error-actions">
+                    <a th:href="@{/}" class="btn btn-primary btn-lg">
+                        Back to Book List </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <footer th:insert="blocks/footer :: footer"></footer>
 </body>
 

@@ -1,16 +1,35 @@
-//package com.bookstore.app.form;
-/*
+package com.bookstore.app.form;
+
 import com.bookstore.app.model.Book;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class BookForm {
 
+    @NotBlank(message = "Required!")
+    private String isbn;
+    @NotBlank(message = "Required!")
+    private String title;
+    @NotBlank(message = "Required!")
+    private String author;
+    @NotBlank(message = "Required!")
+    private String publisher;
+    @NotNull(message = "Required!")
+    @PositiveOrZero(message = "Only positive numbers!")
+    @Min(value = 1377, message = "Must be from 1377 till 2021!")
+    @Max(value = 2021, message = "Must be from 1377 till 2021!")
+    private Integer year;
+    @NotBlank(message = "Required!")
+    private String description;
+    @NotNull(message = "Required!")
+    private BigDecimal price;
+
     private MultipartFile imageFile;
 
     public BookForm(Book book) {
-        this.id = book.getId();
         this.isbn = book.getIsbn();
         this.title = book.getTitle();
         this.author = book.getAuthor();
@@ -18,41 +37,16 @@ public class BookForm {
         this.year = book.getYear();
         this.description = book.getDescription();
         this.price = book.getPrice();
-        this.imageFile = getImageFile();
     }
 
-    private long id;
-
-    @NotBlank(message = "Required!")
-    private String isbn;
-
-    @NotBlank(message = "Required!")
-    private String title;
-
-    @NotBlank(message = "Required!")
-    private String author;
-
-    @NotBlank(message = "Required!")
-    private String publisher;
-
-    @NotNull(message = "Required!")
-    @PositiveOrZero(message = "Only positive numbers!")
-    @Min(value = 1377, message = "Must be from 1377 till 2021!")
-    @Max(value = 2021, message = "Must be from 1377 till 2021!")
-    private Integer year;
-
-    @NotBlank(message = "Required!")
-    private String description;
-
-    @NotNull(message = "Required!")
-    private BigDecimal price;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public BookForm() {
+        this.isbn = getIsbn();
+        this.title = getTitle();
+        this.author = getAuthor();
+        this.publisher = getPublisher();
+        this.year = getYear();
+        this.description = getDescription();
+        this.price = getPrice();
     }
 
     public String getIsbn() {
@@ -120,4 +114,3 @@ public class BookForm {
     }
 
 }
-*/

@@ -3,26 +3,30 @@ package com.bookstore.app.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-//import com.bookstore.app.form.BookForm;
+
+import com.bookstore.app.dao.BookDAO;
+import com.bookstore.app.form.BookForm;
 import com.bookstore.app.repository.BookRepository;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import com.bookstore.app.model.Book;
 import com.bookstore.app.service.BookService;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
 @Controller
-public class MainController {
+public class BookController {
+
+    @Autowired
+    private BookDAO bookDAO;
 
     @Autowired
     private BookService bookService;
@@ -30,34 +34,13 @@ public class MainController {
     @Autowired
     protected BookRepository bookRepository;
 
-    @RequestMapping("/403")
-    public String accessDenied() {
-        return "/403";
-    }
-
-    @RequestMapping("/404")
-    public String pageNotFound() {
-        return "/404";
-    }
-
-    @GetMapping("/")
+    @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String viewHomePage(Model model) {
-        return pager(1, model);
-    }
-
-    @RequestMapping(value = {"/accountInfo"}, method = RequestMethod.GET)
-    public String accountInfo(Model model) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(userDetails.getPassword());
-        System.out.println(userDetails.getUsername());
-        System.out.println(userDetails.isEnabled());
-
-        model.addAttribute("userDetails", userDetails);
-        return "accountInfo";
+        return pagination(1, model);
     }
 
     @GetMapping("/page/{pageNo}")
-    public String pager(@PathVariable(value = "pageNo") int pageNo, Model model) {
+    public String pagination(@PathVariable(value = "pageNo") int pageNo, Model model) {
         int pageSize = 50;
         Page<Book> page = bookService.page(pageNo, pageSize);
         List<Book> listBooks = page.getContent();
@@ -79,38 +62,21 @@ public class MainController {
 
     @GetMapping("/viewRegisterForm")
     public String viewRegisterForm(Model model) {
-        Book book = new Book();
-        model.addAttribute("book", book);
+        BookForm bookForm = new BookForm();
+        model.addAttribute("bookForm", bookForm);
+        // model.addAttribute("bookForm", new BookForm());
         return "bookRegisterForm";
     }
 
-    /*
     @PostMapping("/saveBook")
-    public String saveBook(@ModelAttribute @Valid BookForm bookForm, Errors errors, Model model) {
+    public String addBook(
+            @ModelAttribute @Valid BookForm bookForm, BindingResult bindingResult, Errors errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("bookForm", bookForm);
             return "bookRegisterForm";
         } else {
-            bookService.saveBook(bookForm);
-        }
-        return "index";
-    }
-    */
-    @PostMapping("/saveBook")
-    public String saveBook(
-            @RequestParam("imageFile") MultipartFile imageFile, ModelMap modelMap,
-            @ModelAttribute("book") @Valid Book book, BindingResult bindingResult, Model model, Errors errors) {
-        if (errors.hasErrors()) {
-            model.addAttribute("book", book);
-            return "bookRegisterForm";
-        } else {
-
             try {
-                if (!imageFile.isEmpty()) {
-                    modelMap.addAttribute("imageFile", imageFile);
-                    bookService.saveImageFile(imageFile);
-                }
-                bookRepository.save(book);
+                bookDAO.saveBook(bookForm);
             } catch (Exception e) {
                 System.out.println(e);
                 return "bookRegisterForm";
@@ -119,14 +85,14 @@ public class MainController {
         }
     }
 
-    @RequestMapping(value = {"/viewEditForm/{id}"}, method = RequestMethod.GET)
+    @GetMapping("/viewEditForm/{id}")
     public String viewEditForm(@PathVariable(value = "id") long id, Model model) {
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(userDetails.getPassword());
         System.out.println(userDetails.getUsername());
         System.out.println(userDetails.isEnabled());
-        Book book = bookService.getBookById(id);
+        Book book = bookDAO.getBookById(id);
         model.addAttribute("book", book);
         return "bookEditForm";
     }
@@ -135,21 +101,18 @@ public class MainController {
 
     @PostMapping("/viewEditForm/{id}")
     public String updateBook(@PathVariable(value = "id") long id,
-                             @RequestParam("imageFile") MultipartFile imageFile, ModelMap modelMap,
-                             @ModelAttribute("book") @Valid Book book, BindingResult bindingResult, Model model, Errors errors) {
+                             @ModelAttribute("bookForm") @Valid BookForm bookForm, BindingResult bindingResult, Errors errors, Model model) {
         bookRepository.findById(id).orElse((Book) Null);
         if (errors.hasErrors()) {
-            model.addAttribute("book", book);
+            model.addAttribute("bookForm", bookForm);
             return "bookEditForm";
         } else {
             try {
-                if (!imageFile.isEmpty()) {
-                    modelMap.addAttribute("imageFile", imageFile);
-                    bookService.saveImageFile(imageFile);
-                }
-                bookRepository.save(book);
+                bookDAO.saveBook(bookForm);
             } catch (Exception e) {
-                System.out.println(e);
+                Throwable rootCause = ExceptionUtils.getRootCause(e);
+                String message = rootCause.getMessage();
+                model.addAttribute("errorMessage", message);
                 return "bookEditForm";
             }
             return "redirect:/";
@@ -158,7 +121,7 @@ public class MainController {
 
     @GetMapping("/deleteBook/{id}")
     public String deleteBook(@PathVariable(value = "id") long id) {
-        this.bookService.deleteBookById(id);
+        this.bookDAO.deleteBookById(id);
         return "redirect:/";
     }
 }

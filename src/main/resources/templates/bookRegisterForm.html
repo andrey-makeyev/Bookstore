@@ -16,10 +16,9 @@
     <hr>
     <h2>Add Book</h2>
 
-    <form th:action="@{/saveBook}" th:object="${book}"
-          method="post" enctype="multipart/form-data" th:modelAttribute="book">
+    <form th:action="@{/saveBook}" th:object="${bookForm}"
+          method="post" enctype="multipart/form-data" th:modelAttribute="bookForm">
 
-        <input type="hidden" th:field="*{id}"/>
         <h5>Price</h5>
         <input type="text" th:field="*{price}" th:modelAttribute="price"
                placeholder="Book Price" class="form-control mb-4 col-4">
@@ -57,7 +56,7 @@
               th:errors="*{isbn}"></span><br>
         <h5>Add picture</h5>
         <div class="custom-file mb-4">
-            <input type="file" th:modelAttribute="imageFile" name="imageFile" class="custom-file-input" id="customFile"> <label class="custom-file-label"
+            <input type="file" th:field="*{imageFile}" name="imageFile" class="custom-file-input" id="customFile"> <label class="custom-file-label"
                                            for="customFile">Book Image</label>
         </div>
 
