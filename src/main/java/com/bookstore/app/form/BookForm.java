@@ -1,46 +1,44 @@
 package com.bookstore.app.form;
 
-import com.bookstore.app.model.Book;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
+@Validated
 public class BookForm {
 
     private long id;
 
-    @NotBlank(message = "Required!")
+    @NotBlank(message = "Book ISBN is required and must be unique!")
     private String isbn;
-    @NotBlank(message = "Required!")
+
+    @NotBlank(message = "Required field!")
     private String title;
-    @NotBlank(message = "Required!")
+
+    @NotBlank(message = "Required field!")
     private String author;
-    @NotBlank(message = "Required!")
+
+    @NotBlank(message = "Required field!")
     private String publisher;
-    @NotNull(message = "Required!")
+
+    @NotNull(message = "Required field!")
     @PositiveOrZero(message = "Only positive numbers!")
-    @Min(value = 1377, message = "Must be from 1377 till 2021!")
-    @Max(value = 2021, message = "Must be from 1377 till 2021!")
+    @Min(value = 1377, message = "Only from 1377 till 2021!")
+    @Max(value = 2021, message = "Only from 1377 till 2021!")
     private Integer year;
-    @NotBlank(message = "Required!")
+
+    @NotBlank(message = "Required field!")
     private String description;
-    @NotNull(message = "Required!")
+
+    @NotNull(message = "Required field!")
     @PositiveOrZero(message = "Only positive numbers!")
     private BigDecimal price;
 
     private MultipartFile imageFile;
 
-    public BookForm(Book book) {
-        this.id = book.getId();
-        this.isbn = book.getIsbn();
-        this.title = book.getTitle();
-        this.author = book.getAuthor();
-        this.publisher = book.getPublisher();
-        this.year = book.getYear();
-        this.description = book.getDescription();
-        this.price = book.getPrice();
-    }
+    private boolean newBook = false;
 
     public BookForm() {
         this.id = getId();
@@ -51,6 +49,8 @@ public class BookForm {
         this.year = getYear();
         this.description = getDescription();
         this.price = getPrice();
+        this.imageFile = getImageFile();
+        this.newBook = true;
     }
 
     public long getId() {
@@ -123,6 +123,14 @@ public class BookForm {
 
     public void setImageFile(MultipartFile imageFile) {
         this.imageFile = imageFile;
+    }
+
+    public boolean isNewBook() {
+        return newBook;
+    }
+
+    public void setNewBook(boolean newBook) {
+        this.newBook = newBook;
     }
 
 }

@@ -16,11 +16,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.bookstore.app.model.Book;
 import com.bookstore.app.service.BookService;
-
-import javax.validation.Valid;
+import com.bookstore.app.validator.BookFormValidator;
 
 @Controller
 public class BookController {
@@ -69,17 +69,17 @@ public class BookController {
 
     @PostMapping("/saveBook")
     public String addBook(
-            @ModelAttribute @Valid BookForm bookForm, BindingResult bindingResult, Errors errors, Model model) {
+            @ModelAttribute("bookForm") @Validated BookForm bookForm, BindingResult bindingResult, Errors errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("bookForm", bookForm);
             return "bookRegisterForm";
         } else {
             try {
-                bookDAO.saveBook(bookForm);
+                this.bookDAO.saveBook(bookForm);
             } catch (Exception e) {
                 Throwable rootCause = ExceptionUtils.getRootCause(e);
                 String message = rootCause.getMessage();
-                model.addAttribute("errorMessage", message);
+                model.addAttribute("validationError", message);
                 return "bookRegisterForm";
             }
             return "redirect:/";
@@ -95,6 +95,7 @@ public class BookController {
         System.out.println(userDetails.isEnabled());
         Book book = bookDAO.getBookById(id);
         model.addAttribute("book", book);
+
         return "bookEditForm";
     }
 
@@ -102,7 +103,7 @@ public class BookController {
 
     @PostMapping("/viewEditForm/{id}")
     public String updateBook(@PathVariable(value = "id") long id,
-                             @ModelAttribute @Valid BookForm bookForm, BindingResult bindingResult, Errors errors, Model model) {
+                             @ModelAttribute("bookForm") @Validated BookForm bookForm, BindingResult bindingResult, Errors errors, Model model) {
         bookRepository.findById(id).orElse((Book) Null);
         if (errors.hasErrors()) {
             model.addAttribute("bookForm", bookForm);
@@ -113,7 +114,7 @@ public class BookController {
             } catch (Exception e) {
                 Throwable rootCause = ExceptionUtils.getRootCause(e);
                 String message = rootCause.getMessage();
-                model.addAttribute("errorMessage", message);
+                model.addAttribute("validationError", message);
                 return "bookEditForm";
             }
             return "redirect:/";

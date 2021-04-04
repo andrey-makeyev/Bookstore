@@ -13,7 +13,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Optional;
@@ -41,25 +40,22 @@ public class BookDAO extends BookForm {
     @Autowired
     protected BookRepository bookRepository;
 
-    public void saveBook(@Valid BookForm bookForm) throws IOException {
+    public void saveBook(BookForm bookForm) throws IOException {
         Session session = this.sessionFactory.getCurrentSession();
+
         long id = bookForm.getId();
         String isbn = bookForm.getIsbn();
 
         Book book = null;
 
         boolean isNew = false;
+
         if (isbn != null) {
             book = this.findIsbn(isbn);
         }
         if (book == null) {
             isNew = true;
             book = new Book();
-        }
-
-        String fileName = StringUtils.cleanPath(bookForm.getImageFile().getOriginalFilename());
-        if (fileName.contains("..")) {
-            System.out.println("File is invalid!");
         }
 
         try {
@@ -71,6 +67,11 @@ public class BookDAO extends BookForm {
             book.setPublisher(bookForm.getPublisher());
             book.setDescription(bookForm.getDescription());
             book.setPrice(bookForm.getPrice());
+
+            String fileName = StringUtils.cleanPath(bookForm.getImageFile().getOriginalFilename());
+            if (fileName.contains("..")) {
+                System.out.println("File is invalid!");
+            }
 
             if (bookForm.getImageFile() != null) {
                 String image = null;
@@ -85,11 +86,12 @@ public class BookDAO extends BookForm {
             }
 
             if (isNew) {
-                session.persist(book);
+                session.save(book);
             }
-            session.flush();
 
+            session.clear();
             this.bookRepository.save(book);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

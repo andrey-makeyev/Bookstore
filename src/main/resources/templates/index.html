@@ -23,7 +23,6 @@
     <div>
         <hr>
         <br>
-
         <table border="0" class="table table-striped table-responsive-md">
             <thead>
             <tr>
@@ -51,7 +50,6 @@
             </thead>
             <br>
             <tbody>
-
             <tr th:each="book : ${listBooks}">
                 <th scope="row"><img alt=""
                                      th:src="*{'data:image/jpeg;data:image/jpg;data:image/png;data:image/gif;base64,'+{book.image}}"

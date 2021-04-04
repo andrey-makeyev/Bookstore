@@ -14,9 +14,11 @@
     <h1>Bookstore Administration Panel</h1>
     <hr>
     <h2>Add Book</h2>
-    <div th:if="${errorMessage!= null}" class="error-message" th:utext="${errorMessage}"></div>
+    <div th:if="${validationError!= null}" class="validationError" th:utext="${validationError}">
+    </div>
     <form th:action="@{/saveBook}" th:object="${bookForm}"
           method="post" enctype="multipart/form-data" th:modelAttribute="bookForm">
+
         <h5>Price</h5>
         <input type="text" th:field="*{price}" th:modelAttribute="price"
                placeholder="Book Price" class="form-control mb-4 col-4">
@@ -47,12 +49,18 @@
                placeholder="Book Publisher" class="form-control mb-4 col-4">
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('publisher')}"
               th:errors="*{publisher}"></span>
-        <h5>ISBN</h5>
-        <input type="text" th:field="*{isbn}" th:modelAttribute="isbn"
+        <h5>ISBN (must be unique)</h5>
+        <input th:field="*{newBook}" type="hidden" />
+        <input type="text" th:if="${bookForm.newBook}"th:field="*{isbn}" th:modelAttribute="isbn"
                placeholder="Book ISBN" class="form-control mb-4 col-4">
-        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('isbn') }"
-              th:errors="*{isbn}"></span><br>
-        <h5>Add picture</h5>
+        <th:block th:if="${!bookForm.newBook}">
+        <span class="validationError" style="color:red" th:if="${#fields.hasErrors('isbn')}"
+              th:errors="*{isbn}" th:utext="${bookForm.isbn}"></span>
+            <input type="hidden" th:field="*{isbn}" />
+        </th:block>
+        <br>
+        <hr>
+        <h5>Add Picture</h5>
         <div class="custom-file mb-4">
             <input type="file" th:field="*{imageFile}" name="imageFile" class="custom-file-input" id="customFile">
             <label class="custom-file-label"

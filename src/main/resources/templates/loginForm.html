@@ -17,8 +17,7 @@
     <h6>Bookstore Administration Panel</h6>
     <br>
     <th:block th:if="${#session != null && #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}">
-        <div th:if="${#request.getParameter('error') == 'true'}"
-             style="color: red; margin: 10px 0px; text-align: center">
+        <div class="validationError" th:if="${#request.getParameter('error') == 'true'}">
             <b>Login failed!</b><br/>
             <span th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}"></span>
         </div>

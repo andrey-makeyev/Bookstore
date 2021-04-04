@@ -38,7 +38,7 @@ public class AccountController extends WebMvcConfigurerAdapter {
 
     @RequestMapping("/403")
     public String accessDenied() {
-        return "/403";
+        return "403";
     }
 
     @GetMapping("/accountInfo")
