@@ -77,7 +77,9 @@ public class BookController {
             try {
                 bookDAO.saveBook(bookForm);
             } catch (Exception e) {
-                System.out.println(e);
+                Throwable rootCause = ExceptionUtils.getRootCause(e);
+                String message = rootCause.getMessage();
+                model.addAttribute("errorMessage", message);
                 return "bookRegisterForm";
             }
             return "redirect:/";
@@ -100,14 +102,14 @@ public class BookController {
 
     @PostMapping("/viewEditForm/{id}")
     public String updateBook(@PathVariable(value = "id") long id,
-                             @ModelAttribute("bookForm") @Valid BookForm bookForm, BindingResult bindingResult, Errors errors, Model model) {
+                             @ModelAttribute @Valid BookForm bookForm, BindingResult bindingResult, Errors errors, Model model) {
         bookRepository.findById(id).orElse((Book) Null);
         if (errors.hasErrors()) {
             model.addAttribute("bookForm", bookForm);
             return "bookEditForm";
         } else {
             try {
-                bookDAO.saveBook(bookForm);
+                this.bookDAO.saveBook(bookForm);
             } catch (Exception e) {
                 Throwable rootCause = ExceptionUtils.getRootCause(e);
                 String message = rootCause.getMessage();

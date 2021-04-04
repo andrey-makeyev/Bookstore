@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 
 public class BookForm {
 
+    private long id;
+
     @NotBlank(message = "Required!")
     private String isbn;
     @NotBlank(message = "Required!")
@@ -24,11 +26,13 @@ public class BookForm {
     @NotBlank(message = "Required!")
     private String description;
     @NotNull(message = "Required!")
+    @PositiveOrZero(message = "Only positive numbers!")
     private BigDecimal price;
 
     private MultipartFile imageFile;
 
     public BookForm(Book book) {
+        this.id = book.getId();
         this.isbn = book.getIsbn();
         this.title = book.getTitle();
         this.author = book.getAuthor();
@@ -39,6 +43,7 @@ public class BookForm {
     }
 
     public BookForm() {
+        this.id = getId();
         this.isbn = getIsbn();
         this.title = getTitle();
         this.author = getAuthor();
@@ -46,6 +51,14 @@ public class BookForm {
         this.year = getYear();
         this.description = getDescription();
         this.price = getPrice();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getIsbn() {

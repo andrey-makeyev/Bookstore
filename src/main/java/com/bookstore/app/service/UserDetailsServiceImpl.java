@@ -26,8 +26,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         System.out.println("Account= " + account);
 
         if (account == null) {
-            throw new UsernameNotFoundException("User " //
-                    + username + " was not found in the database");
+            throw new UsernameNotFoundException("UserName "
+                    + username + " was not found");
         }
 
         String role = account.getUserRole();
@@ -43,8 +43,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
 
-        UserDetails userDetails = (UserDetails) new User(account.getUserName(), //
-                account.getEncrytedPassword(), enabled, accountNonExpired, //
+        UserDetails userDetails = (UserDetails) new User(account.getUserName(),
+                account.getEncrytedPassword(), enabled, accountNonExpired,
                 credentialsNonExpired, accountNonLocked, grantList);
 
         return userDetails;

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Bookstore Administration Panel - Register New Book</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
-
 </head>
 <body>
 <div class="container">
@@ -15,10 +14,9 @@
     <h1>Bookstore Administration Panel</h1>
     <hr>
     <h2>Add Book</h2>
-
+    <div th:if="${errorMessage!= null}" class="error-message" th:utext="${errorMessage}"></div>
     <form th:action="@{/saveBook}" th:object="${bookForm}"
           method="post" enctype="multipart/form-data" th:modelAttribute="bookForm">
-
         <h5>Price</h5>
         <input type="text" th:field="*{price}" th:modelAttribute="price"
                placeholder="Book Price" class="form-control mb-4 col-4">
@@ -56,23 +54,17 @@
               th:errors="*{isbn}"></span><br>
         <h5>Add picture</h5>
         <div class="custom-file mb-4">
-            <input type="file" th:field="*{imageFile}" name="imageFile" class="custom-file-input" id="customFile"> <label class="custom-file-label"
-                                           for="customFile">Book Image</label>
+            <input type="file" th:field="*{imageFile}" name="imageFile" class="custom-file-input" id="customFile">
+            <label class="custom-file-label"
+                   for="customFile">Book Image</label>
         </div>
-
         <button type="submit" class="btn btn-outline-success col-2"> Save Book</button>
-
     </form>
-
     <br>
     <a th:href="@{/}"> Back to Book List</a>
 </div>
 <br>
 <hr>
-
 <footer th:insert="blocks/footer :: footer"></footer>
-
-
 </body>
-
 </html>
