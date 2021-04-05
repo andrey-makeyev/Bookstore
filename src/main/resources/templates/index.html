@@ -110,6 +110,7 @@
                th:href="@{'/page/' + ${totalPages} + '?sortColumn=' + ${sortColumn} + '&sortOrder=' + ${sortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">Last</a>
             <span th:unless="${currentPage < totalPages}">Last</span>
         </div>
+
     </div>
 </div>
 <br>
