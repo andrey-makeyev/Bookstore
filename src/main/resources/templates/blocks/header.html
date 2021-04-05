@@ -5,12 +5,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
-        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
-        <link th:href="@{css/style.css}" rel="stylesheet" media="screen"/>
-        <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
-
+        <link th:href="@{/css/styles.css}" rel="stylesheet" type="text/css">
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css">
+        <link th:href="@{/css/all.css}" rel="stylesheet" type="text/css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
+    <div class="container">
     <nav class="navbar fixed-top navbar-expand-md custom-navbar navbar-dark">
         <a class="navbar-brand" th:href="@{/}"><b>Bookstore</b></a>
         <button class="navbar-toggler navbar-toggler-right custom-toggler" type="button" data-toggle="collapse"
@@ -19,6 +20,12 @@
         </button>
         <div class="collapse navbar-collapse " id="collapsibleNavbar">
             <ul class="navbar-nav ml-auto ">
+                <form class="form-inline my-2 my-lg-0" th:action="@{/page/1}" method="get" >
+                    <input type="hidden" name="sortColumn" th:value="${sortColumn}" />
+                    <input type="hidden" name="sortOrder" th:value="${sortOrder}" />
+                    <input id="txtSearch" name="keyword" class="form-control mr-sm-2" type="search" placeholder="Title or Author" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
                 <th:block sec:authorize="isAuthenticated()">
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/accountInfo}" th:utext="${#request.userPrincipal.name}"></a>
@@ -35,5 +42,7 @@
             </ul>
         </div>
     </nav>
+    </div>
+    <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
     </body>
 </div>

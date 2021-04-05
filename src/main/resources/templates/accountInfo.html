@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Bookstore - Account Info</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/styles.css}">
 </head>
 <body>
 <div class="container">
@@ -11,17 +10,23 @@
     <br>
     <br>
     <br>
-    <hr>
-    <div>Bookstore - Account Info</div>
-    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-        <div class="alert alert-success">
-            <strong>Bookstore Administrator </strong>| UserName: <span th:utext="${#request.userPrincipal.name}"/>
-        </div>
-    </th:block>
+    <h1>Bookstore Administration Panel</h1>
     <hr>
     <br>
-    <a th:href="@{/}"> Back to Book List</a>
-    <footer th:insert="blocks/footer :: footer"></footer>
+    <h2>Accoutn Info</h2>
+    <div>
+        <hr>
+        <br>
+        <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+            <div class="alert alert-success">
+                <strong>Bookstore Administrator </strong>| UserName: <span th:utext="${#request.userPrincipal.name}"/>
+            </div>
+        </th:block>
+        <hr>
+        <br>
+        <a th:href="@{/}" class="btn btn-lg btn-light"> Back to Book List</a>
+        <footer th:insert="blocks/footer :: footer"></footer>
+    </div>
 </div>
 </body>
 </html>

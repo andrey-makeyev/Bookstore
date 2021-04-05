@@ -10,6 +10,7 @@ import com.bookstore.app.repository.BookRepository;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -26,27 +27,35 @@ import com.bookstore.app.validator.BookFormValidator;
 public class BookController {
 
     @Autowired
-    private BookDAO bookDAO;
+    protected BookRepository bookRepository;
 
     @Autowired
     private BookService bookService;
 
     @Autowired
-    protected BookRepository bookRepository;
+    private BookDAO bookDAO;
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String viewHomePage(Model model) {
-        return pagination(1, model);
+        String keyword = null;
+        return getAllBooks(model, 1 , "id", "descending", keyword);
     }
 
-    @GetMapping("/page/{pageNo}")
-    public String pagination(@PathVariable(value = "pageNo") int pageNo, Model model) {
-        int pageSize = 50;
-        Page<Book> page = bookService.page(pageNo, pageSize);
+    @GetMapping("/page/{pageNumber}")
+    public String getAllBooks(Model model, @PathVariable(value = "pageNumber") int pageNumber, @Param("sortColumn") String sortColumn,
+                              @Param("sortOrder") String sortOrder, @Param("keyword") String keyword) {
+        Page<Book> page = bookService.getAllBooksPageable(pageNumber, sortColumn, sortOrder, keyword);
         List<Book> listBooks = page.getContent();
-        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("currentPage", pageNumber);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalBooks", page.getTotalElements());
+
+        model.addAttribute("sortColumn", sortColumn);
+        model.addAttribute("sortOrder", sortOrder);
+        model.addAttribute("keyword", keyword);
+
+        model.addAttribute("reverseSortOrder", sortOrder.equals("ascending") ? "descending" : "ascending");
+
         model.addAttribute("listBooks", listBooks);
         return "index";
     }

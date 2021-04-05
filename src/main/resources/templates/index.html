@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Bookstore</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="container">
@@ -19,7 +18,10 @@
     </th:block>
     <hr>
     <br>
-    <h2>Book List</h2>
+    <div class="alert alert-success">
+        <h2>All Books: [[${totalBooks}]]</h2>
+        <div><i>Sorted by [[${sortColumn}]] in [[${sortOrder}]] order</i></div>
+    </div>
     <div>
         <hr>
         <br>
@@ -28,13 +30,25 @@
             <tr>
                 <th class="table-bordered">#
                 </th>
-                <th class="table-bordered">Book Title
+                <th class="table-bordered">Title
+                    <div class="btn btn-outline-light"><a
+                            th:href="@{'/page/' + ${currentPage} + '?sortColumn=title&sortOrder=' + ${reverseSortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+                        <i class="fa fa-angle-double-down"></i><i class="fa fa-angle-double-up"></i></a></div>
                 </th>
-                <th class="table-bordered">Book Author
+                <th class="table-bordered">Author
+                    <div class="btn btn-outline-light"><a
+                            th:href="@{'/page/' + ${currentPage} + '?sortColumn=author&sortOrder=' + ${reverseSortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+                        <i class="fa fa-angle-double-down"></i><i class="fa fa-angle-double-up"></i></a></div>
                 </th>
-                <th class="table-bordered">Book Year
+                <th class="table-bordered">Year
+                    <div class="btn btn-outline-light"><a
+                            th:href="@{'/page/' + ${currentPage} + '?sortColumn=year&sortOrder=' + ${reverseSortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+                        <i class="fa fa-angle-double-down"></i><i class="fa fa-angle-double-up"></i></a></div>
                 </th>
-                <th class="table-bordered">Book Price
+                <th class="table-bordered">Price
+                    <div class="btn btn-outline-light"><a
+                            th:href="@{'/page/' + ${currentPage} + '?sortColumn=price&sortOrder=' + ${reverseSortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+                        <i class="fa fa-angle-double-down"></i><i class="fa fa-angle-double-up"></i></a></div>
                 </th>
                 <th class="table-bordered">Book Details
                 </th>
@@ -48,7 +62,6 @@
                 </th:block>
             </tr>
             </thead>
-            <br>
             <tbody>
             <tr th:each="book : ${listBooks}">
                 <th scope="row"><img alt=""
@@ -58,7 +71,8 @@
                 <td th:text="${book.author}"></td>
                 <td th:text="${book.year}"></td>
                 <td th:text="${book.price}"></td>
-                <td><a th:href="@{/viewBookDetails/{id}(id=${book.id})}">See more</a>
+                <td>
+                    <a th:href="@{/viewBookDetails/{id}(id=${book.id})}" class="btn btn-light">See more</a>
                 </td>
                 <th:block sec:authorize="hasRole('ROLE_ADMIN')">
                     <td class="border-info" style="background: whitesmoke"><a
@@ -70,31 +84,31 @@
             </tr>
             </tbody>
         </table>
-
+        <div>&nbsp;</div>
+        <div>&nbsp;</div>
         <div th:if="${totalPages > 1}">
-            <div class="row col-sm-10">
-                <div class="col-sm-2">
-                    Total Books: [[${totalBooks}]]
-                </div>
-                <div class="col-sm-1">
-					<span th:each="i: ${#numbers.sequence(1, totalPages)}">
-						<a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
-						<span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
-					</span>
-                </div>
-                <div class="col-sm-1">
-                    <a th:if="${currentPage >= totalPages}" th:href="@{'/page/' + ${currentPage - 1}}">Previous</a>
-                    <span th:unless="${currentPage >= totalPages}">Previous</span>
-                </div>
-                <div class="col-sm-1">
-                    <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}}">Next</a>
-                    <span th:unless="${currentPage < totalPages}">Next</span>
-                </div>
-                <div class="col-sm-1">
-                    <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}}">Last</a>
-                    <span th:unless="${currentPage < totalPages}">Last</span>
-                </div>
-            </div>
+            &nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+            <a th:if="${currentPage > 1}"
+               th:href="@{'/page/1' + '?sortColumn' + ${sortColumn} + '&sortOrder=' + ${sortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">First</a>
+            <span th:unless="${currentPage > 1}">First</span>
+            &nbsp;&nbsp;
+            <a th:if="${currentPage > 1}"
+               th:href="@{'/page/' + ${currentPage - 1} + '?sortColumn=' + ${sortColumn} + '&ssortOrder=' + ${sortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">Previous</a>
+            <span th:unless="${currentPage > 1}">Previous</span>
+            &nbsp;&nbsp;
+            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+			<a th:if="${currentPage != i}"
+               th:href="@{'/page/' + ${i} + '?sortColumn=' + ${sortColumn} + '&sortOrder=' + ${sortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">[[${i}]]</a>
+			<span th:unless="${currentPage != i}">[[${i}]]</span>
+			&nbsp;
+		</span>
+            <a th:if="${currentPage < totalPages}"
+               th:href="@{'/page/' + ${currentPage + 1} + '?sortColumn=' + ${sortColumn} + '&sortOrder=' + ${sortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">Next</a>
+            <span th:unless="${currentPage < totalPages}">Next</span>
+            &nbsp;&nbsp;
+            <a th:if="${currentPage < totalPages}"
+               th:href="@{'/page/' + ${totalPages} + '?sortColumn=' + ${sortColumn} + '&sortOrder=' + ${sortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">Last</a>
+            <span th:unless="${currentPage < totalPages}">Last</span>
         </div>
     </div>
 </div>

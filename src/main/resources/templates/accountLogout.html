@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Bookstore - Account Logout</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/styles.css}">
 </head>
 <body>
 <div class="container">
     <header th:insert="blocks/header :: header"></header>
     <div th:class="align-content-center">You have been logged out</div>
     <hr>
-    <a th:href="@{/}"> Back to Book List</a>
+    <a th:href="@{/}" class="btn btn-lg btn-light"> Back to Book List</a>
 
     <footer th:insert="blocks/footer :: footer"></footer>
 </div>

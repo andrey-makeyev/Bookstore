@@ -1,5 +1,6 @@
 body {
-    font-family: "Open Sans", sans-serif;
+    font-family: FontAwesome, "Font Awesome 5 Free", "Font Awesome 5 Brands", "Droid Sans", "Droid Sans Fallback", "Open Sans", sans-serif;
+    content: "\f007";
     color: #5a5a5a;
 }
 
@@ -34,35 +35,9 @@ body {
     border-radius: 2px;
 }
 
-.input-group-addon .fa {
-    font-size: 18px;
-}
-
 .login-btn {
     font-size: 15px;
     font-weight: bold;
-}
-
-.social-btn .btn {
-    border: none;
-    margin: 10px 3px 0;
-    opacity: 1;
-}
-
-.social-btn .btn:hover {
-    opacity: 0.9;
-}
-
-.social-btn .btn-primary {
-    background: #507cc0;
-}
-
-.social-btn .btn-info {
-    background: #64ccf1;
-}
-
-.social-btn .btn-danger {
-    background: #df4930;
 }
 
 .or-seperator {

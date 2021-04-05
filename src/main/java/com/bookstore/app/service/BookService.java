@@ -5,5 +5,6 @@ import com.bookstore.app.model.Book;
 
 public interface BookService {
 
-    Page<Book> page(int pageNo, int pageSize);
+    Page<Book> getAllBooksPageable(int pageNumber, String sortColumn, String sortOrder, String keyword);
+
 }

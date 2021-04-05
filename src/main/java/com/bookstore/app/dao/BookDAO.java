@@ -31,6 +31,7 @@ public class BookDAO extends BookForm {
             Session session = this.sessionFactory.getCurrentSession();
             Query<Book> query = session.createQuery(findIsbnQuery, Book.class);
             query.setParameter("isbn", isbn);
+            query.setMaxResults(1).uniqueResult();
             return (Book) query.getSingleResult();
         } catch (NoResultException e) {
             return null;
@@ -111,4 +112,6 @@ public class BookDAO extends BookForm {
     public void deleteBookById(long id) {
         this.bookRepository.deleteById(id);
     }
+
+
 }

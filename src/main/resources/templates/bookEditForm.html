@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Bookstore Administration Panel - Edit Book</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="container">
@@ -19,25 +18,25 @@
             <input type="hidden" th:value="${element.id}" name="id"/>
             <h5>Price</h5>
             <input type="text" th:value="${element.price}" name="price"
-                   placeholder="Book Price" class="form-control mb-4 col-4">
+                   placeholder="Book Price" class="form-control mb-4 col-4" required>
             <h5>Title</h5>
             <input type="text" th:value="${element.title}" name="title"
-                   placeholder="Book Title" class="form-control mb-4 col-4">
+                   placeholder="Book Title" class="form-control mb-4 col-4" required>
             <h5>Year</h5>
             <input type="text" th:value="${element.year}" name="year"
-                   placeholder="Book Year" class="form-control mb-4 col-4">
+                   placeholder="Book Year" class="form-control mb-4 col-4" required>
             <h5>Description</h5>
             <textarea th:text="${element.description}" name="description"
-                      placeholder="Book Description" class="form-control mb-4 col-4"></textarea>
+                      placeholder="Book Description" class="form-control mb-4 col-4" required></textarea>
             <h5>Author</h5>
             <input type="text" th:value="${element.author}" name="author"
-                   placeholder="Book Author" class="form-control mb-4 col-4">
+                   placeholder="Book Author" class="form-control mb-4 col-4" required>
             <h5>Publisher</h5>
             <input type="text" th:value="${element.publisher}" name="publisher"
-                   placeholder="Book Publisher" class="form-control mb-4 col-4">
+                   placeholder="Book Publisher" class="form-control mb-4 col-4" required>
             <h5>ISBN (must be unique)</h5>
             <input type="text" th:value="${element.isbn}" name="isbn"
-                   placeholder="Book ISBN" class="form-control mb-4 col-4"><br>
+                   placeholder="Book ISBN" class="form-control mb-4 col-4" required><br>
             <h5>Change Picture</h5>
             <div class="custom-file mb-4">
                 <input type="file" th:value="${element.image}" name="imageFile" class="custom-file-input"
@@ -48,7 +47,7 @@
         </form>
     </div>
     <br>
-    <a th:href="@{/}"> Back to Book List</a>
+    <a th:href="@{/}" class="btn btn-lg btn-light"> Back to Book List</a>
 </div>
 <br>
 <hr>
