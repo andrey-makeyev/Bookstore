@@ -72,7 +72,8 @@
                 <td th:text="${book.year}"></td>
                 <td th:text="${book.price}"></td>
                 <td>
-                    <a th:href="@{/viewBookDetails/{id}(id=${book.id})}" class="btn btn-light">See more</a>
+                    <div class="btn btn-outline-light"><a th:href="@{/viewBookDetails/{id}(id=${book.id})}">See more</a>
+                    </div>
                 </td>
                 <th:block sec:authorize="hasRole('ROLE_ADMIN')">
                     <td class="border-info" style="background: whitesmoke"><a
