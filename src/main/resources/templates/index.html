@@ -87,7 +87,7 @@
         <div>&nbsp;</div>
         <div>&nbsp;</div>
         <div th:if="${totalPages > 1}">
-            &nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;
             <a th:if="${currentPage > 1}"
                th:href="@{'/page/1' + '?sortColumn' + ${sortColumn} + '&sortOrder=' + ${sortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">First</a>
             <span th:unless="${currentPage > 1}">First</span>
