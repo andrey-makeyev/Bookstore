@@ -20,38 +20,38 @@
 
         <h5>Price</h5>
         <input type="text" th:field="*{price}" th:modelAttribute="price"
-               placeholder="Book Price" class="form-control mb-4 col-4" required>
+               placeholder="Book Price" class="form-control mb-4 col-4">
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('price')}"
               th:errors="*{price}"></span>
         <h5>Title</h5>
         <input type="text" th:field="*{title}" th:modelAttribute="title"
-               placeholder="Book Title" class="form-control mb-4 col-4" required>
+               placeholder="Book Title" class="form-control mb-4 col-4">
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('title')}"
               th:errors="*{title}"></span>
         <h5>Year</h5>
         <input type="text" th:field="*{year}" th:modelAttribute="year"
-               placeholder="Book Year" class="form-control mb-4 col-4" required>
+               placeholder="Book Year" class="form-control mb-4 col-4">
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('year')}"
               th:errors="*{year}"></span>
         <h5>Description</h5>
         <textarea th:field="*{description}" th:modelAttribute="description"
-                  placeholder="Description" class="form-control mb-4 col-4" required></textarea>
+                  placeholder="Description" class="form-control mb-4 col-4"></textarea>
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('description')}"
               th:errors="*{description}"></span>
         <h5>Author</h5>
         <input type="text" th:field="*{author}" th:modelAttribute="author"
-               placeholder="Book Author" class="form-control mb-4 col-4" required>
+               placeholder="Book Author" class="form-control mb-4 col-4">
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('author')}"
               th:errors="*{author}"></span>
         <h5>Publisher</h5>
         <input type="text" th:field="*{publisher}" th:modelAttribute="publisher"
-               placeholder="Book Publisher" class="form-control mb-4 col-4" required>
+               placeholder="Book Publisher" class="form-control mb-4 col-4">
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('publisher')}"
               th:errors="*{publisher}"></span>
         <h5>ISBN (must be unique)</h5>
         <input th:field="*{newBook}" type="hidden" />
         <input type="text" th:if="${bookForm.newBook}"th:field="*{isbn}" th:modelAttribute="isbn"
-               placeholder="Book ISBN" class="form-control mb-4 col-4" required>
+               placeholder="Book ISBN" class="form-control mb-4 col-4">
         <th:block th:if="${!bookForm.newBook}">
         <span class="validationError" style="color:red" th:if="${#fields.hasErrors('isbn')}"
               th:errors="*{isbn}" th:utext="${bookForm.isbn}"></span>
