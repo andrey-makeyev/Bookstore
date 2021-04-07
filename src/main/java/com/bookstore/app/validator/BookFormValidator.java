@@ -3,6 +3,7 @@ package com.bookstore.app.validator;
 import com.bookstore.app.dao.BookDAO;
 import com.bookstore.app.model.Book;
 import com.bookstore.app.form.BookForm;
+import com.bookstore.app.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -14,7 +15,13 @@ import org.springframework.web.bind.annotation.InitBinder;
 @Component
 public class BookFormValidator implements Validator {
 
-    /*protected BookFormValidator bookFormValidator;
+    @Autowired
+    private BookDAO bookDAO;
+
+    @Autowired
+    private BookRepository bookRepository;
+
+    protected BookFormValidator bookFormValidator;
 
     @InitBinder
     public void myInitBinder(WebDataBinder dataBinder) {
@@ -23,14 +30,10 @@ public class BookFormValidator implements Validator {
             return;
         }
         System.out.println("Target=" + target);
-
         if (target.getClass() == BookForm.class) {
             dataBinder.setValidator(bookFormValidator);
         }
-    }*/
-
-    @Autowired
-    private BookDAO bookDAO;
+    }
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -41,23 +44,19 @@ public class BookFormValidator implements Validator {
     public void validate(Object target, Errors errors) {
         BookForm bookForm = (BookForm) target;
 
-        /*ValidationUtils.rejectIfEmptyOrWhitespace(errors, "isbn", "NotEmpty.bookForm.isbn");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "NotEmpty.bookForm.title");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "author", "NotEmpty.bookForm.author");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "publisher", "NotEmpty.bookForm.publisher");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "year", "NotEmpty.bookForm.year");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "NotEmpty.bookForm.description");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price", "NotEmpty.bookForm.price");*/
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "isbn", "NotEmpty.bookForm.isbn");
 
         String isbn = bookForm.getIsbn();
         if (isbn != null && isbn.length() > 0) {
             if (bookForm.isNewBook()) {
                 Book book = bookDAO.findIsbn(isbn);
-                    if (book != null) {
+                if (book != null) {
                     errors.rejectValue("isbn", "Duplicate.bookForm.isbn");
                 }
+                //    if(bookDAO.findIsbn(isbn).toString().equals(bookForm.getIsbn())) {
+                //  errors.rejectValue("isbn", "Duplicate.bookForm.isbn");
+                //    }
             }
         }
     }
 }
-

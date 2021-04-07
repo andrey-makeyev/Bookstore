@@ -1,17 +1,16 @@
 package com.bookstore.app.form;
 
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
-@Validated
 public class BookForm {
 
     private long id;
 
-    @NotBlank(message = "Book ISBN is required and must be unique!")
+    @Valid
     private String isbn;
 
     @NotBlank(message = "Required field!")

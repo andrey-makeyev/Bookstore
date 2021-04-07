@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.bookstore.app.dao.BookDAO;
 import com.bookstore.app.form.BookForm;
 import com.bookstore.app.repository.BookRepository;
+import com.bookstore.app.validator.BookFormValidator;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,11 +18,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.bookstore.app.model.Book;
 import com.bookstore.app.service.BookService;
-import com.bookstore.app.validator.BookFormValidator;
+
+import javax.validation.Valid;
 
 @Controller
 public class BookController {
@@ -34,6 +35,10 @@ public class BookController {
 
     @Autowired
     private BookDAO bookDAO;
+
+    @Autowired
+    private BookFormValidator bookFormValidator;
+
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String viewHomePage(Model model) {
@@ -78,7 +83,7 @@ public class BookController {
 
     @PostMapping("/saveBook")
     public String addBook(
-            @ModelAttribute("bookForm") @Validated BookForm bookForm, BindingResult bindingResult, Errors errors, Model model) {
+            @ModelAttribute("bookForm") @Valid BookForm bookForm, BindingResult bindingResult, Errors errors, Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("bookForm", bookForm);
             return "bookRegisterForm";
@@ -87,8 +92,9 @@ public class BookController {
                 this.bookDAO.saveBook(bookForm);
             } catch (Exception e) {
                 Throwable rootCause = ExceptionUtils.getRootCause(e);
+                String errorMessage = "Dublicate books, check ISBN! ";
                 String message = rootCause.getMessage();
-                model.addAttribute("validationError", message);
+                model.addAttribute("validationError", errorMessage);
                 return "bookRegisterForm";
             }
             return "redirect:/";
@@ -112,7 +118,7 @@ public class BookController {
 
     @PostMapping("/viewEditForm/{id}")
     public String updateBook(@PathVariable(value = "id") long id,
-                             @ModelAttribute("bookForm") @Validated BookForm bookForm, BindingResult bindingResult, Errors errors, Model model) {
+                             @ModelAttribute("bookForm") @Valid BookForm bookForm, BindingResult bindingResult, Errors errors, Model model) {
         bookRepository.findById(id).orElse((Book) Null);
         if (errors.hasErrors()) {
             model.addAttribute("bookForm", bookForm);
@@ -123,7 +129,8 @@ public class BookController {
             } catch (Exception e) {
                 Throwable rootCause = ExceptionUtils.getRootCause(e);
                 String message = rootCause.getMessage();
-                model.addAttribute("validationError", message);
+                String errorMessage = "Dublicate books, check ISBN!";
+                model.addAttribute("validationError", errorMessage);
                 return "bookEditForm";
             }
             return "redirect:/";

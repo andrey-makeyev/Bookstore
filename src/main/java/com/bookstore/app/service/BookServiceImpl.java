@@ -8,9 +8,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.bookstore.app.model.Book;
 import com.bookstore.app.repository.BookRepository;
-import org.springframework.web.bind.annotation.ModelAttribute;
-
-import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {

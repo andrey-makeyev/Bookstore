@@ -16,9 +16,12 @@
     <div th:each="element : ${book}">
         <form method="post" th:object="${bookForm}" enctype="multipart/form-data" th:modelAttribute="bookForm">
             <input type="hidden" th:value="${element.id}" name="id"/>
+            <h5>ISBN</h5>
+            <input type="text" th:value="${element.isbn}" name="isbn"
+                   placeholder="Book ISBN (must be unique)" class="form-control mb-4 col-4" required><br>
             <h5>Price</h5>
             <input type="text" th:value="${element.price}" name="price"
-                   placeholder="Book Price" class="form-control mb-4 col-4" required>
+                   placeholder="Book Price (EUR)" class="form-control mb-4 col-4" required>
             <h5>Title</h5>
             <input type="text" th:value="${element.title}" name="title"
                    placeholder="Book Title" class="form-control mb-4 col-4" required>
@@ -34,9 +37,6 @@
             <h5>Publisher</h5>
             <input type="text" th:value="${element.publisher}" name="publisher"
                    placeholder="Book Publisher" class="form-control mb-4 col-4" required>
-            <h5>ISBN (must be unique)</h5>
-            <input type="text" th:value="${element.isbn}" name="isbn"
-                   placeholder="Book ISBN" class="form-control mb-4 col-4" required><br>
             <h5>Change Picture</h5>
             <div class="custom-file mb-4">
                 <input type="file" th:value="${element.image}" name="imageFile" class="custom-file-input"
