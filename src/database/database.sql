@@ -37,17 +37,23 @@ CREATE TABLE `orders` (
 
 DROP TABLE IF EXISTS `cart_items`;
 CREATE TABLE `cart_items` (
-                              `id` MEDIUMINT NOT NULL PRIMARY KEY,
-                              `amount` DOUBLE PRECISION NOT NULL,
-                              `price` DOUBLE PRECISION NOT NULL,
-                              `quantity` INTEGER NOT NULL,
-                              `order_id` MEDIUMINT NOT NULL,
-                              `book_id` MEDIUMINT NOT NULL,
+                        `id` MEDIUMINT NOT NULL PRIMARY KEY,
+                        `amount` DOUBLE PRECISION NOT NULL,
+                        `price` DOUBLE PRECISION NOT NULL,
+                        `quantity` INTEGER NOT NULL,
+                        `order_id` MEDIUMINT NOT NULL,
+                        `book_id` MEDIUMINT NOT NULL,
             CONSTRAINT `cart_items_orders_fk` FOREIGN KEY (`order_id`)
             REFERENCES `orders` (`id`),
             CONSTRAINT `cart_items_books_fk` FOREIGN KEY (`book_id`)
             REFERENCES `books` (`id`)
 );
+
+ALTER TABLE `cart_items`
+    ADD INDEX `cart_items_orders_fk_index` (`order_id` ASC);
+
+ALTER TABLE `cart_items`
+    ADD INDEX `cart_items_books_fk_index` (`book_id` ASC);
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
