@@ -13,13 +13,18 @@
     <h1>Bookstore Administration Panel</h1>
     <hr>
     <br>
-    <h2>Accoutn Info</h2>
+    <h2>Account Info</h2>
     <div>
         <hr>
         <br>
         <th:block sec:authorize="hasRole('ROLE_ADMIN')">
             <div class="alert alert-success">
                 <strong>Bookstore Administrator </strong>| UserName: <span th:utext="${#request.userPrincipal.name}"/>
+            </div>
+        </th:block>
+        <th:block sec:authorize="hasRole('ROLE_OP')">
+            <div class="alert alert-success">
+                <strong>Bookstore Operator </strong>| UserName: <span th:utext="${#request.userPrincipal.name}"/>
             </div>
         </th:block>
         <hr>

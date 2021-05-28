@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/viewEditForm", "/viewRegisterForm", "/accountInfo")
-                .access("hasRole('ROLE_ADMIN')");
+                .access("hasAnyRole('ROLE_ADMIN', 'ROLE_OP')");
 
         http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
 

@@ -16,10 +16,37 @@ CREATE TABLE `books` (
 
 DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE `accounts` (
-                            `user_name` VARCHAR(20) NOT NULL PRIMARY KEY,
-                            `active`    BIT NOT NULL,
-                            `encrypted_password`  VARCHAR(128) NOT NULL,
-                            `user_role` VARCHAR(20) NOT NULL
+                        `user_name` VARCHAR(20) NOT NULL PRIMARY KEY,
+                        `active` BIT NOT NULL,
+                        `encrypted_password` VARCHAR(128) NOT NULL,
+                        `user_role` VARCHAR(20) NOT NULL
+);
+
+DROP TABLE IF EXISTS `orders`;
+CREATE TABLE `orders` (
+                        `id` MEDIUMINT NOT NULL PRIMARY KEY,
+                        `amount` DOUBLE PRECISION NOT NULL,
+                        `customer_address` VARCHAR(255) NOT NULL,
+                        `customer_email` VARCHAR(128) NOT NULL,
+                        `customer_name` VARCHAR(255) NOT NULL,
+                        `customer_phone` VARCHAR(128) NOT NULL,
+                        `order_date` DATETIME NOT NULL,
+                        `order_number` INTEGER NOT NULL,
+            CONSTRAINT `order_uk` UNIQUE(`order_number`)
+);
+
+DROP TABLE IF EXISTS `cart_items`;
+CREATE TABLE `cart_items` (
+                              `id` MEDIUMINT NOT NULL PRIMARY KEY,
+                              `amount` DOUBLE PRECISION NOT NULL,
+                              `price` DOUBLE PRECISION NOT NULL,
+                              `quantity` INTEGER NOT NULL,
+                              `order_id` MEDIUMINT NOT NULL,
+                              `book_id` MEDIUMINT NOT NULL,
+            CONSTRAINT `cart_items_orders_fk` FOREIGN KEY (`order_id`)
+            REFERENCES `orders` (`id`),
+            CONSTRAINT `cart_items_books_fk` FOREIGN KEY (`book_id`)
+            REFERENCES `books` (`id`)
 );
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -50,6 +77,10 @@ CREATE TABLE `accounts` (
 INSERT INTO accounts (`user_name`, `active`, `encrypted_password`, `user_role`)
 VALUES ('admin', 1,
         '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', 'ROLE_ADMIN');
+
+INSERT INTO accounts (`user_name`, `active`, `encrypted_password`, `user_role`)
+VALUES ('op', 1,
+        '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', 'ROLE_OP');
 
 INSERT INTO books (id, isbn, author, title, year, publisher, description, price)
 VALUES (1, '978-5-699-12014-1', 'Jaskaran Cullen', 'Tales of the Heart', 1999, 'Grand Encore Multimedia', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 55.00);
