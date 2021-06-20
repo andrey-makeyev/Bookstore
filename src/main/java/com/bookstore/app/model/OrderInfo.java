@@ -1,40 +1,41 @@
 package com.bookstore.app.model;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
-@Entity
-@Table(name = "orders", //
-        uniqueConstraints = { @UniqueConstraint(columnNames = "order_number") })
-public class Order implements Serializable {
+public class OrderInfo {
 
-    private static final long serialVersionUID = -2576670215015463100L;
-
-    @Id
-    @Column(name = "id", length = 50)
     private String id;
-
-    @Column(name = "order_date", nullable = false)
     private Date orderDate;
-
-    @Column(name = "order_number", nullable = false)
     private int orderNumber;
-
-    @Column(name = "amount", nullable = false)
     private double amount;
 
-    @Column(name = "customer_name", length = 255, nullable = false)
     private String customerName;
-
-    @Column(name = "customer_address", length = 255, nullable = false)
     private String customerAddress;
-
-    @Column(name = "customer_email", length = 128, nullable = false)
     private String customerEmail;
-
-    @Column(name = "customer_phone", length = 128, nullable = false)
     private String customerPhone;
+
+    private List<OrderDetailInfo> details;
+
+    //public OrderInfo(Integer id, Date orderDate, int orderNumber, double amount, String customerName, String customerAddress, String customerEmail, String customerPhone) {
+
+    //}
+
+    // Using for Hibernate Query.
+    public OrderInfo(String id, Date orderDate, int orderNumber, //
+                     double amount, String customerName, String customerAddress, //
+                     String customerEmail, String customerPhone) {
+        this.id = id;
+        this.orderDate = orderDate;
+        this.orderNumber = orderNumber;
+        this.amount = amount;
+
+        this.customerName = customerName;
+        this.customerAddress = customerAddress;
+        this.customerEmail = customerEmail;
+        this.customerPhone = customerPhone;
+    }
 
     public String getId() {
         return id;
@@ -98,6 +99,14 @@ public class Order implements Serializable {
 
     public void setCustomerPhone(String customerPhone) {
         this.customerPhone = customerPhone;
+    }
+
+    public List<OrderDetailInfo> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<OrderDetailInfo> details) {
+        this.details = details;
     }
 
 }

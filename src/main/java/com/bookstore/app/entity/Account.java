@@ -1,4 +1,4 @@
-package com.bookstore.app.model;
+package com.bookstore.app.entity;
 
 import java.io.Serializable;
 
@@ -12,6 +12,8 @@ import javax.persistence.Table;
 @Table(name = "accounts")
 public class Account implements Serializable {
 
+    private static final long serialVersionUID = -2054386655979281969L;
+
     public static final String ROLE_ADMIN = "admin";
 
     @Id
@@ -19,11 +21,11 @@ public class Account implements Serializable {
 
     private String userName;
 
-    @Column(name = "encrypted_password", length = 128, nullable = false)
-    private String encrytedPassword;
+    @Column(name = "password_hash", length = 128, nullable = false)
+    private String passwordHash;
 
-    @Column(name = "active", length = 1, nullable = false)
-    private boolean active;
+    @Column(name = "is_active", length = 1, nullable = false)
+    private boolean isActive;
 
     @Column(name = "user_role", length = 20, nullable = false)
     private String userRole;
@@ -36,20 +38,20 @@ public class Account implements Serializable {
         this.userName = userName;
     }
 
-    public String getEncrytedPassword() {
-        return encrytedPassword;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setEncrytedPassword(String encrytedPassword) {
-        this.encrytedPassword = encrytedPassword;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public boolean isActive() {
-        return active;
+        return isActive;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     public String getUserRole() {
@@ -62,7 +64,7 @@ public class Account implements Serializable {
 
     @Override
     public String toString() {
-        return "[" + this.userName + "," + this.encrytedPassword + "," + this.userRole + "]";
+        return "[" + this.userName + "," + this.passwordHash + "," + this.userRole + "]";
     }
 
 }

@@ -1,7 +1,7 @@
 package com.bookstore.app.service;
 
 import org.springframework.data.domain.Page;
-import com.bookstore.app.model.Book;
+import com.bookstore.app.entity.Book;
 
 public interface BookService {
 

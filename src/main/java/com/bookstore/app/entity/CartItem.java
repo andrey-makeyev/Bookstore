@@ -1,7 +1,9 @@
-package com.bookstore.app.model;
+package com.bookstore.app.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Table(name = "cart_items")
@@ -10,16 +12,16 @@ public class CartItem implements Serializable {
     private static final long serialVersionUID = 7550745928843183535L;
 
     @Id
-    @Column(name = "ID", length = 50, nullable = false)
+    @Column(name = "id", length = 50, nullable = false)
     private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false, //
+    @JoinColumn(name = "order_id", nullable = false,
             foreignKey = @ForeignKey(name = "cart_items_orders_fk"))
-    private com.bookstore.app.model.Order order;
+    private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id", nullable = false, //
+    @JoinColumn(name = "book_id", nullable = false,
             foreignKey = @ForeignKey(name = "cart_items_books_fk"))
     private Book book;
 
@@ -40,11 +42,11 @@ public class CartItem implements Serializable {
         this.id = id;
     }
 
-    public com.bookstore.app.model.Order getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(com.bookstore.app.model.Order order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

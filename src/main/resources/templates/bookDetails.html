@@ -7,6 +7,9 @@
 <body>
 <div class="container">
     <header th:insert="blocks/header :: header"></header>
+    <br>
+    <br>
+    <br>
     <th:block sec:authorize="!isAuthenticated()">
         <h1>Bookstore</h1>
     </th:block>
@@ -15,42 +18,54 @@
     </th:block>
     <hr>
     <br>
-    <h2>Book Details</h2>
-    <br>
+    <div class="header_info" th:each="element : ${book}">
+    <h2 th:text="${element.title}"></h2>
+    </div>
+    <hr class="featurette-divider">
+    <div th:each="element : ${book}">
+        <h2 class="product-main-price">
+            EUR <small class="text-muted" th:text="${element.price}">Price</small>
+        </h2>
+        <br>
+        <a th:href="@{|/buyBook?isbn=${element.isbn}|}"><button type="button" class="btn btn-lg btn-primary">Add to cart</button></a>
+        <hr>
     <div>
-        <hr class="featurette-divider">
-        <div th:each="element : ${book}">
-            <th scope="row"><img alt=""
-                                 th:src="*{'data:image/jpeg;data:image/jpg;data:image/png;data:image/gif;base64,'+{element.image}}"
-                                 style="width: 300px;height: 300px;"></th>
-            <hr>
-            <div class="m-t-md">
-                <h2 class="product-main-price">
-                    EUR <small class="text-muted" th:text="${element.price}">Price</small>
-                </h2>
-                <hr>
-                <dl th:class="text-muted">
-                    <dt>Title: <h5 th:text="${element.title}"></h5></dt>
-                    <dt>Author: <h5 th:text="${element.author}"></h5></dt>
-                    <dt>Year:<h5 th:text="${element.year}"></h5></dt>
-                    <dt>Description:<h5 th:text="${element.description}"></h5></dt>
-                    <dt>Publiher:<h5 th:text="${element.publisher}"></h5></dt>
-                    <dt>ISBN: <h5 th:text="${element.isbn}"></h5></dt>
-                </dl>
-                <br>
-                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-                    <td><a th:href="@{/viewEditForm/{id}(id=${element.id})}"
-                           class="btn btn-outline-warning">Edit</a>
-                        <a th:href="@{/deleteBook/{id}(id=${element.id})}" class="btn btn-outline-danger">Delete</a>
-                    </td>
-                </th:block>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <hidden></hidden>
+                                <h5>Title</h5><h6 class="card-title" th:text="${element.title}"></h6>
+                                <h5>Author</h5><h6 class="card-text" th:text="${element.author}"></h6>
+                                <h5>Year</h5><h6 class="card-text" th:text="${element.year}"></h6>
+                                <h5>Description</h5><h6 class="card-text" th:text="${element.description}"></h6>
+                                <h5>Publisher</h5><h6 class="card-text" th:text="${element.publisher}"></h6>
+                                <h5>ISBN</h5><h6 class="card-text" th:text="${element.isbn}"></h6>
+                                <br>
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <img th:src="*{'data:image/jpeg;data:image/jpg;data:image/png;data:image/gif;base64,'+{element.image}}" class="card-image" alt="" width="400px">
+                            </div>
+                            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                                <td>&nbsp&nbsp&nbsp<a th:href="@{/viewEditForm/{id}(id=${element.id})}"
+                                       class="btn btn-warning">Edit</a>
+                                    &nbsp
+                                    <a th:href="@{/deleteBook/{id}(id=${element.id})}" class="btn btn-danger">Delete</a>
+                                </td>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <br>
-    <a th:href="@{/}" class="btn btn-lg btn-light"> Back to Book List</a>
-    <br>
+        <a th:href="@{/}" class="btn btn-light"> Back to Book List</a>
+        <br>
     <hr>
+</div>
 </div>
 <footer th:insert="blocks/footer :: footer"></footer>
 </body>

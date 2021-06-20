@@ -1,40 +1,40 @@
-package com.bookstore.app.model;
+package com.bookstore.app.entity;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "books")
-@Transactional
 public class Book implements Serializable {
+
+    //private static final long serialVersionUID = -1000119078147252957L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    private long id;
-
-    @Column(name = "isbn")
+    @Column(name = "isbn", length = 20, nullable = false)
     private String isbn;
 
-    @Column(name = "title")
+    @Column(name = "title", length = 128, nullable = false)
     private String title;
 
-    @Column(name = "author")
+    @Column(name = "author", length = 50, nullable = false)
     private String author;
 
-    @Column(name = "publisher")
+    @Column(name = "publisher", length = 128, nullable = false)
     private String publisher;
 
-    @Column(name = "year")
+    @Column(name = "year", nullable = false)
     private Integer year;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 255, nullable = false)
     private String description;
 
-    @Column(name = "price")
-    private BigDecimal price;
+    @Column(name = "price", nullable = false)
+    private double price;
 
     @Lob
     @Column(columnDefinition = "MEDIUMBLOB", name = "image", nullable = true)
@@ -43,11 +43,11 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -99,11 +99,11 @@ public class Book implements Serializable {
         this.description = description;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -117,15 +117,17 @@ public class Book implements Serializable {
 
     @Override
     public String toString() {
-        return "Book [id=" + id + ", " +
-                "isbn=" + isbn + ", " +
-                "title=" + title + ", " +
-                "author=" + author + ", " +
-                "publisher=" + publisher + ", " +
-                "year=" + year + ", " +
-                "description=" + description + ", " +
-                "price=" + price + ", " +
-                "image=" + image + "]";
+        return "Book{" +
+                "id=" + id +
+                ", isbn='" + isbn + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", year=" + year +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", image='" + image + '\'' +
+                '}';
     }
 }
 

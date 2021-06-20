@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bookstore.app.dao.AccountDAO;
-import com.bookstore.app.model.Account;
+import com.bookstore.app.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,7 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         boolean accountNonLocked = true;
 
         UserDetails userDetails = (UserDetails) new User(account.getUserName(),
-                account.getEncrytedPassword(), enabled, accountNonExpired,
+                account.getPasswordHash(), enabled, accountNonExpired,
                 credentialsNonExpired, accountNonLocked, grantList);
 
         return userDetails;

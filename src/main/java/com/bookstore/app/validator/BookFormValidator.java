@@ -1,7 +1,7 @@
 package com.bookstore.app.validator;
 
 import com.bookstore.app.dao.BookDAO;
-import com.bookstore.app.model.Book;
+import com.bookstore.app.entity.Book;
 import com.bookstore.app.form.BookForm;
 import com.bookstore.app.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,13 +49,13 @@ public class BookFormValidator implements Validator {
         String isbn = bookForm.getIsbn();
         if (isbn != null && isbn.length() > 0) {
             if (bookForm.isNewBook()) {
-                Book book = bookDAO.findIsbn(isbn);
+                Book book = bookDAO.findBook(isbn);
                 if (book != null) {
                     errors.rejectValue("isbn", "Duplicate.bookForm.isbn");
                 }
-                //    if(bookDAO.findIsbn(isbn).toString().equals(bookForm.getIsbn())) {
-                //  errors.rejectValue("isbn", "Duplicate.bookForm.isbn");
-                //    }
+                  //  if(bookDAO.findIsbn(isbn).toString().equals(bookForm.getIsbn())) {
+                // errors.rejectValue("isbn", "Duplicate.bookForm.isbn");
+                 //   }
             }
         }
     }

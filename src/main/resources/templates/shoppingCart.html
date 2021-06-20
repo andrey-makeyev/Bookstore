@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart</title>
+</head>
+<body>
+<div class="container">
+    <header th:insert="blocks/header :: header"></header>
+    <br>
+    <br>
+    <br>
+
+    <div class="cart_section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="cart_container">
+                        <div class="cart_title">Shopping Cart<small></small></div>
+                        <th:block th:if="${cartForm == null || cartForm.cartLines == null || cartForm.cartLines.empty}">
+                            <h2>There is no items in Cart</h2>
+                            <a th:href="@{/}">Show Book List</a>
+                        </th:block>
+                        <th:block
+                                th:if="${cartForm != null && cartForm.cartLines != null && !cartForm.cartLines.empty}">
+                            <form method="POST" th:action="@{/shoppingCart}">
+                                <div class="cart_items" th:each="cartLineInfo, varStatus : ${cartForm.cartLines}">
+                                    <ul class="cart_list">
+                                        <li class="cart_item clearfix">
+
+                                            <div class="cart_item_image">
+                                                <img class="product-image" alt="" th:src="*{'data:image/jpeg;data:image/jpg;data:image/png;data:image/gif;base64,'+{cartLineInfo.bookInfo.image}}">
+                                            </div>
+                                            <div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
+                                                <div class="cart_item_name cart_info_col">
+                                                    <div class="cart_item_title">ISBN</div>
+                                                    <div class="cart_item_text"><span
+                                                            th:utext="${cartLineInfo.bookInfo.isbn}"></span>
+                                                        <input type="hidden"
+                                                               th:name="|cartLines[${varStatus.index}].bookInfo.isbn|"
+                                                               th:value="${cartLineInfo.bookInfo.isbn}"/></div>
+                                                </div>
+                                                <div class="cart_item_name cart_info_col">
+                                                    <div class="cart_item_title">Title</div>
+                                                    <div class="cart_item_text"><span
+                                                            th:utext="${cartLineInfo.bookInfo.title}"></span></div>
+                                                </div>
+                                                <div class="cart_item_quantity cart_info_col">
+                                                    <div class="cart_item_title">Quantity</div>
+                                                    <div class="cart_item_text"><input type="text" class="form-control"
+                                                                                       th:name="|cartLines[${varStatus.index}].quantity|"
+                                                                                       th:value="${cartLineInfo.quantity}"/>
+                                                    </div>
+                                                </div>
+                                                <div class="cart_item_price cart_info_col">
+                                                    <div class="cart_item_title">Price</div>
+                                                    <div class="cart_item_text"><span class="price"
+                                                                                      th:utext="${#numbers.formatDecimal(cartLineInfo.bookInfo.price,3,2,'COMMA')}">
+                        </span></div>
+                                                </div>
+                                                <div class="cart_item_total cart_info_col">
+                                                    <div class="cart_item_title">Total</div>
+                                                    <div class="cart_item_text"> <span class="subtotal"
+                                                                                       th:utext="${#numbers.formatDecimal(cartLineInfo.amount,3,2,'COMMA')}">
+                        </span></div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <a th:href="@{|/shoppingCartRemoveBook?isbn=${cartLineInfo.bookInfo.isbn}|}">
+                                        Delete from cart
+                                    </a>
+                                </div>
+                                <div class="order_total">
+                                    <div class="order_total_content text-md-right">
+                                        <div style="clear: both"></div>
+                                        <div class="order_total_title">Update Quantity:</div>
+                                        <div class="order_total_amount">
+                                            <button type="button" class="btn btn-lg btn-link"><input
+                                                    class="button-update-sc" type="submit" value=" CheckOut "/></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="cart_buttons">
+                                    <a class="navi-item" th:href="@{/}">
+                                        <button type="button" class="btn btn-secondary">Continue Shopping</button>
+                                    </a>
+                                    <a class="navi-item" th:href="@{/shoppingCartCustomer}">
+                                        <button type="button" class="btn btn-lg btn-primary">Continue Order</button>
+                                    </a>
+                                </div>
+
+                            </form>
+
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <br>
+        <hr>
+        <footer th:insert="blocks/footer :: footer"></footer>
+
+</body>
+</html>

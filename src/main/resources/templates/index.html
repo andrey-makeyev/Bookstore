@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
     <title>Bookstore</title>
@@ -21,7 +22,7 @@
     </th:block>
     <hr>
     <br>
-    <div class="alert alert-success">
+    <div class="header_info">
         <h2>All Books: [[${totalBooks}]]</h2>
         <div><i>Sorted by [[${sortColumn}]] in [[${sortOrder}]] order</i></div>
     </div>
@@ -55,10 +56,12 @@
                 </th>
                 <th class="table-bordered">Book Details
                 </th>
+                <th class="table-bordered">Buy Now
+                </th>
                 <th:block sec:authorize="hasRole('ROLE_ADMIN')">
                     <th class="border-info" style="background: whitesmoke"> Administration</th>
                     <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-                        <a th:href="@{/viewRegisterForm}" class="btn btn-outline-success btn-lg align-middle">ADD NEW
+                        <a th:href="@{/viewRegisterForm}" class="btn btn-success btn-lg align-middle">ADD NEW
                             BOOK</a>
                         <hr>
                     </th:block>
@@ -75,13 +78,15 @@
                 <td th:text="${book.year}"></td>
                 <td th:text="${book.price}"></td>
                 <td>
-                    <a th:href="@{/viewBookDetails/{id}(id=${book.id})}" class="btn btn-light">See more</a>
+                    <a th:href="@{/viewBookDetails/{id}(id=${book.id})}"><button type="button" class="btn btn-link">See more</button></a>
+                </td>
+                <td>
+                    <a th:href="@{|/buyBook?isbn=${book.isbn}|}"><button type="button" class="btn btn-link">Add to cart</button></a>
                 </td>
                 <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-                    <td class="border-info" style="background: whitesmoke"><a
-                            th:href="@{/viewEditForm/{id}(id=${book.id})}"
-                            class="btn btn-outline-warning">Edit</a>
-                        <a th:href="@{/deleteBook/{id}(id=${book.id})}" class="btn btn-outline-danger">Delete</a>
+                    <td class="border-info" style="background: whitesmoke">
+                        <a th:href="@{/viewEditForm/{id}(id=${book.id})}"><button type="button" class="btn btn-link">Edit</button></a>
+                        <a th:href="@{/deleteBook/{id}(id=${book.id})}"><button type="button" class="btn btn-link">Delete</button></a>
                     </td>
                 </th:block>
             </tr>
@@ -125,7 +130,6 @@
                            th:href="@{'/page/' + ${totalPages} + '?sortColumn=' + ${sortColumn} + '&sortOrder=' + ${sortOrder} + ${keyword != null ? '&keyword=' + keyword : ''}}">Last</a>
                         <span th:unless="${currentPage < totalPages}"><a class="page-link disabled"
                                                                          style="color: #5a5a5a; !important;">Last</a></span>
-                    </li>
                     </li>
                 </ul>
             </nav>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart Finalize</title>
+</head>
+<body>
+<div class="container">
+    <header th:insert="blocks/header :: header"></header>
+    <br>
+    <br>
+    <br>
+
+<div class="page-title">Finalize</div>
+<div class="container">
+    <h3>Thank you for Order</h3>
+    Your order number is: <span th:utext="${lastOrderedCart.orderNumber}"></span>
+</div>
+</div>
+
+    <br>
+    <hr>
+    <footer th:insert="blocks/footer :: footer"></footer>
+</body>
+</html>

@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import com.bookstore.app.model.Book;
+import com.bookstore.app.entity.Book;
 import com.bookstore.app.repository.BookRepository;
 
 @Service

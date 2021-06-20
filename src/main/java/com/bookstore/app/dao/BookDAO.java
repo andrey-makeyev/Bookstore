@@ -1,7 +1,9 @@
 package com.bookstore.app.dao;
 
 import com.bookstore.app.form.BookForm;
-import com.bookstore.app.model.Book;
+import com.bookstore.app.entity.Book;
+import com.bookstore.app.model.BookInfo;
+import com.bookstore.app.pagination.PaginationResult;
 import com.bookstore.app.repository.BookRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,14 +19,15 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Optional;
 
+
+@Transactional
 @Repository
-@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 public class BookDAO extends BookForm {
 
     @Autowired
     private SessionFactory sessionFactory;
 
-    public Book findIsbn(String isbn) {
+    public Book findBook(String isbn) {
         try {
             String findIsbnQuery = "SELECT b FROM " + Book.class.getName() + " b WHERE b.isbn =:isbn ";
 
@@ -38,13 +41,22 @@ public class BookDAO extends BookForm {
         }
     }
 
-    @Autowired
-    protected BookRepository bookRepository;
+    public BookInfo findBookInfo(String isbn) {
+        Book book = this.findBook(isbn);
+        if (book == null) {
+            return null;
+        }
+        return new BookInfo(book.getIsbn(), book.getTitle(), book.getPrice(), book.getImage());
+    }
 
+    @Autowired
+    private BookRepository bookRepository;
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
     public void saveBook(BookForm bookForm) throws IOException {
         Session session = this.sessionFactory.getCurrentSession();
 
-        long id = bookForm.getId();
+        Integer id = bookForm.getId();
         String isbn = bookForm.getIsbn();
 
         Book book = null;
@@ -52,7 +64,7 @@ public class BookDAO extends BookForm {
         boolean isNew = false;
 
         if (isbn != null) {
-            book = this.findIsbn(isbn);
+            book = this.findBook(isbn);
         }
         if (book == null) {
             isNew = true;
@@ -73,7 +85,6 @@ public class BookDAO extends BookForm {
             if (fileName.contains("..")) {
                 System.out.println("File is invalid!");
             }
-
             if (bookForm.getImageFile() != null) {
                 String image = null;
                 try {
@@ -87,30 +98,52 @@ public class BookDAO extends BookForm {
             }
 
             if (isNew) {
-                session.save(book);
+                session.persist(book);
             }
-
-            session.clear();
-            this.bookRepository.save(book);
+            session.flush();
+            //this.bookRepository.save(book);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public Book getBookById(long id) {
+    public Book getBookById(Integer id) {
         Optional<Book> optional = bookRepository.findById(id);
         Book book = null;
         if (optional.isPresent()) {
             book = optional.get();
         } else {
-            throw new RuntimeException("Book was not found for id :: " + id);
+            throw new RuntimeException("Book was not found for id " + id);
         }
         return book;
     }
 
-    public void deleteBookById(long id) {
+    public void deleteBookById(Integer id) {
         this.bookRepository.deleteById(id);
+    }
+
+    public PaginationResult<BookInfo> queryBooks(int page, int maxResult, int maxNavigationPage,
+                                                 String likeName) {
+        String sql = "Select new " + BookInfo.class.getName() //
+                + "(p.isbn, p.title, p.price) " + " from "//
+                + Book.class.getName() + " p ";
+        if (likeName != null && likeName.length() > 0) {
+            sql += " Where lower(p.name) like :likeName ";
+        }
+        sql += " order by p.createDate desc ";
+        //
+        Session session = this.sessionFactory.getCurrentSession();
+        Query<BookInfo> query = session.createQuery(sql, BookInfo.class);
+
+        if (likeName != null && likeName.length() > 0) {
+            query.setParameter("likeName", "%" + likeName.toLowerCase() + "%");
+        }
+        return new PaginationResult<BookInfo>(query, page, maxResult, maxNavigationPage);
+    }
+
+    public PaginationResult<BookInfo> queryBooks(int page, int maxResult, int maxNavigationPage) {
+        return queryBooks(page, maxResult, maxNavigationPage, null);
     }
 
 

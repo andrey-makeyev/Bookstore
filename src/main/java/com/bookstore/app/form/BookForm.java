@@ -1,16 +1,19 @@
 package com.bookstore.app.form;
 
+import com.bookstore.app.entity.Book;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.Id;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 public class BookForm {
 
-    private long id;
+    private Integer id;
 
     @Valid
+    @NotBlank(message = "Required field!")
     private String isbn;
 
     @NotBlank(message = "Required field!")
@@ -33,11 +36,15 @@ public class BookForm {
 
     @NotNull(message = "Required field!")
     @PositiveOrZero(message = "Only positive numbers!")
-    private BigDecimal price;
+    private double price;
 
     private MultipartFile imageFile;
 
     private boolean newBook = false;
+
+    /*public BookForm() {
+        this.newBook= true;
+    }*/
 
     public BookForm() {
         this.id = getId();
@@ -52,11 +59,11 @@ public class BookForm {
         this.newBook = true;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -108,11 +115,11 @@ public class BookForm {
         this.description = description;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

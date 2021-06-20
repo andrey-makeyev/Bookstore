@@ -2,7 +2,7 @@ package com.bookstore.app.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import com.bookstore.app.model.Account;
+import com.bookstore.app.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

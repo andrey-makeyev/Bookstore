@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Cart Confirmation</title>
+</head>
+<body>
+
+<div class="container">
+    <header th:insert="blocks/header :: header"></header>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row">
+            <h2 class="text-danger">Customer Information</h2>
+
+            <table class="table table-bordered success">
+                <thead>
+                <tr >
+                    <th >Full Name</th>
+                    <td><span th:utext="${myCart.customerInfo.name}"></span></td>
+                </tr>
+                <tr>
+                    <th class="info">Email</th>
+                    <td><span th:utext="${myCart.customerInfo.email}"></span></td>
+                </tr>
+                <tr>
+                    <th class="info">Phone</th>
+                    <td><span th:utext="${myCart.customerInfo.phone}"></span></td>
+                </tr>
+                <tr>
+                    <th class="info">Address</th>
+                    <td><span th:utext="${myCart.customerInfo.address}"></span></td>
+                </tr>
+
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <br>
+    <hr>
+
+    <div class="container">
+        <h2 class="text-danger">Cart Summary</h2>
+        <div class="row">
+            <br>
+            <div class="product-preview-container" th:each="cartLineInfo : ${myCart.cartLines}">
+                <ul>
+                    <li>
+                        <img class="product-image" alt="" th:src="*{'data:image/jpeg;data:image/jpg;data:image/png;data:image/gif;base64,'+{cartLineInfo.bookInfo.image}}"
+                             style="width: 120px;height: 80px;">
+                    </li>
+                    <li>
+                        ISBN: <span th:utext="${cartLineInfo.bookInfo.isbn}"></span>
+                        <input
+                                type="hidden" name="isbn" th:value="${cartLineInfo.bookInfo.isbn}" />
+                    </li>
+                    <li>Name: <span th:utext="${cartLineInfo.bookInfo.title}"></span></li>
+                    <li>Price:
+                        <span class="price"
+                              th:utext="${#numbers.formatDecimal(cartLineInfo.bookInfo.price,3,2,'COMMA')}">
+                  </span>
+                    </li>
+                    <li>Quantity: <span th:utext="${cartLineInfo.quantity}"></span></li>
+                    <li>Subtotal:
+                        <span class="subtotal"
+                              th:utext="${#numbers.formatDecimal(cartLineInfo.amount,3,2,'COMMA')}">
+                  </span>
+                    </li>
+                </ul>
+            </div>
+
+            <br>
+            <hr>
+
+            <table class="table table-bordered success">
+                <thead>
+                <tr >
+                    <th class="info bg-primary" >Total Quantity</th>
+                    <td class="bg-info"><span th:utext="${myCart.quantityTotal}"></span></td>
+                </tr>
+                <tr>
+                    <th class="info bg-info">Total Amount</th>
+                    <td class="bg-primary"> <span class="total"
+                                                  th:utext="${#numbers.formatDecimal(myCart.amountTotal,3,2,'COMMA')}">
+               </span> €</td>
+                </tr>
+                </thead>
+            </table>
+
+        </div>
+    </div>
+
+    <br>
+
+    <form method="POST" th:action="@{/shoppingCartConfirmation}">
+        <div class="cart_buttons">
+        <a class="navi-item" th:href="@{/shoppingCart}"><button type="button" class="btn btn-secondary">Edit Cart</button>
+
+        </a>
+        <a class="navi-item" th:href="@{/shoppingCartCustomer}"><button type="button" class="btn btn-secondary">Edit Customer Info</button>
+
+        </a>
+        <input type="submit" class="btn btn-lg btn-success" value=" Buy Now " />
+        </div>
+    </form>
+
+    <br>
+    <hr>
+</div>
+    <footer th:insert="blocks/footer :: footer"></footer>
+</body>
+</html>

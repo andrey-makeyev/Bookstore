@@ -6,29 +6,35 @@ import java.util.Optional;
 
 import com.bookstore.app.dao.BookDAO;
 import com.bookstore.app.form.BookForm;
+import com.bookstore.app.model.BookInfo;
+import com.bookstore.app.pagination.PaginationResult;
 import com.bookstore.app.repository.BookRepository;
 import com.bookstore.app.validator.BookFormValidator;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import com.bookstore.app.model.Book;
+import com.bookstore.app.entity.Book;
 import com.bookstore.app.service.BookService;
 
 import javax.validation.Valid;
 
+@Transactional
 @Controller
 public class BookController {
 
     @Autowired
-    protected BookRepository bookRepository;
+    private BookRepository bookRepository;
 
     @Autowired
     private BookService bookService;
@@ -39,11 +45,23 @@ public class BookController {
     @Autowired
     private BookFormValidator bookFormValidator;
 
+   /* @InitBinder
+    public void myInitBinder(WebDataBinder dataBinder) {
+        Object target = dataBinder.getTarget();
+        if (target == null) {
+            return;
+        }
+        System.out.println("Target=" + target);
+
+        if (target.getClass() == BookForm.class) {
+            dataBinder.setValidator(bookFormValidator);
+        }
+    } */
 
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String viewHomePage(Model model) {
         String keyword = null;
-        return getAllBooks(model, 1 , "id", "descending", keyword);
+        return getAllBooks(model, 1 , "isbn", "descending", keyword);
     }
 
     @GetMapping("/page/{pageNumber}")
@@ -65,8 +83,22 @@ public class BookController {
         return "index";
     }
 
-    @GetMapping("/viewBookDetails/{id}")
-    public String viewBookDetails(@PathVariable(value = "id") long id, Model model) {
+    @RequestMapping({ "/bookList" })
+    public String listBookHandler(Model model, //
+                                     @RequestParam(value = "name", defaultValue = "") String likeName,
+                                     @RequestParam(value = "page", defaultValue = "1") int page) {
+        final int maxResult = 5;
+        final int maxNavigationPage = 10;
+
+        PaginationResult<BookInfo> result = bookDAO.queryBooks(page, //
+                maxResult, maxNavigationPage, likeName);
+
+        model.addAttribute("paginationBooks", result);
+        return "bookList";
+    }
+
+    @GetMapping("/viewBookDetails/{isbn}")
+    public String viewBookDetails(@PathVariable(value = "id") Integer id, Model model) {
         Optional<Book> book = bookRepository.findById(id);
         ArrayList<Book> result = new ArrayList<>();
         book.ifPresent(result::add);
@@ -102,7 +134,7 @@ public class BookController {
     }
 
     @GetMapping("/viewEditForm/{id}")
-    public String viewEditForm(@PathVariable(value = "id") long id, Model model) {
+    public String viewEditForm(@PathVariable(value = "id") Integer id, Model model) {
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(userDetails.getPassword());
@@ -117,7 +149,7 @@ public class BookController {
     private Object Null;
 
     @PostMapping("/viewEditForm/{id}")
-    public String updateBook(@PathVariable(value = "id") long id,
+    public String updateBook(@PathVariable(value = "id") Integer id,
                              @ModelAttribute("bookForm") @Valid BookForm bookForm, BindingResult bindingResult, Errors errors, Model model) {
         bookRepository.findById(id).orElse((Book) Null);
         if (errors.hasErrors()) {
@@ -138,7 +170,7 @@ public class BookController {
     }
 
     @GetMapping("/deleteBook/{id}")
-    public String deleteBook(@PathVariable(value = "id") long id) {
+    public String deleteBook(@PathVariable(value = "id") Integer id) {
         this.bookDAO.deleteBookById(id);
         return "redirect:/";
     }

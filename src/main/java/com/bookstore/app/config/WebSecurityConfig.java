@@ -31,8 +31,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/viewEditForm", "/viewRegisterForm", "/accountInfo")
+        http.authorizeRequests().antMatchers("/accountInfo", "/orderList", "/order")
                 .access("hasAnyRole('ROLE_ADMIN', 'ROLE_OP')");
+
+        http.authorizeRequests().antMatchers("/viewEditForm", "/viewRegisterForm").access("hasRole('ROLE_ADMIN')");
 
         http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
 

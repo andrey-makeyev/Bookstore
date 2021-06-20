@@ -1,59 +1,6 @@
-CREATE DATABASE  IF NOT EXISTS `bookstore` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
+DROP DATABASE IF EXISTS `bookstore`;
+CREATE DATABASE IF NOT EXISTS `bookstore`/*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
 USE `bookstore`;
-
-DROP TABLE IF EXISTS `books`;
-CREATE TABLE `books` (
-                         `id` MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                         `isbn` VARCHAR(50) NOT NULL,
-                         `title` VARCHAR(200) NOT NULL,
-                         `author` VARCHAR(50) NOT NULL,
-                         `publisher` VARCHAR(50) NOT NULL,
-                         `year` SMALLINT NOT NULL,
-                         `description` VARCHAR(500) NOT NULL,
-                         `price` DOUBLE PRECISION NOT NULL,
-                         `image` MEDIUMBLOB
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-DROP TABLE IF EXISTS `accounts`;
-CREATE TABLE `accounts` (
-                        `user_name` VARCHAR(20) NOT NULL PRIMARY KEY,
-                        `active` BIT NOT NULL,
-                        `encrypted_password` VARCHAR(128) NOT NULL,
-                        `user_role` VARCHAR(20) NOT NULL
-);
-
-DROP TABLE IF EXISTS `orders`;
-CREATE TABLE `orders` (
-                        `id` MEDIUMINT NOT NULL PRIMARY KEY,
-                        `amount` DOUBLE PRECISION NOT NULL,
-                        `customer_address` VARCHAR(255) NOT NULL,
-                        `customer_email` VARCHAR(128) NOT NULL,
-                        `customer_name` VARCHAR(255) NOT NULL,
-                        `customer_phone` VARCHAR(128) NOT NULL,
-                        `order_date` DATETIME NOT NULL,
-                        `order_number` INTEGER NOT NULL,
-            CONSTRAINT `order_uk` UNIQUE(`order_number`)
-);
-
-DROP TABLE IF EXISTS `cart_items`;
-CREATE TABLE `cart_items` (
-                        `id` MEDIUMINT NOT NULL PRIMARY KEY,
-                        `amount` DOUBLE PRECISION NOT NULL,
-                        `price` DOUBLE PRECISION NOT NULL,
-                        `quantity` INTEGER NOT NULL,
-                        `order_id` MEDIUMINT NOT NULL,
-                        `book_id` MEDIUMINT NOT NULL,
-            CONSTRAINT `cart_items_orders_fk` FOREIGN KEY (`order_id`)
-            REFERENCES `orders` (`id`),
-            CONSTRAINT `cart_items_books_fk` FOREIGN KEY (`book_id`)
-            REFERENCES `books` (`id`)
-);
-
-ALTER TABLE `cart_items`
-    ADD INDEX `cart_items_orders_fk_index` (`order_id` ASC);
-
-ALTER TABLE `cart_items`
-    ADD INDEX `cart_items_books_fk_index` (`book_id` ASC);
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -66,25 +13,95 @@ ALTER TABLE `cart_items`
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+DROP TABLE IF EXISTS `books`;
+DROP TABLE IF EXISTS `accounts`;
+DROP TABLE IF EXISTS `orders`;
+DROP TABLE IF EXISTS `cart_items`;
+
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+CREATE TABLE `books` (
+                         `id` INT(11) NOT NULL,
+                         `isbn` VARCHAR(20) NOT NULL,
+                         `title` VARCHAR(128) NOT NULL,
+                         `author` VARCHAR(50) NOT NULL,
+                         `publisher` VARCHAR(128) NOT NULL,
+                         `year` SMALLINT NOT NULL,
+                         `description` VARCHAR(255) NOT NULL,
+                         `price` DOUBLE PRECISION NOT NULL,
+                         `image` MEDIUMBLOB
+);
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+ALTER TABLE `books`
+    ADD PRIMARY KEY (`isbn`);
 
-INSERT INTO accounts (`user_name`, `active`, `encrypted_password`, `user_role`)
+CREATE TABLE `accounts` (
+                            `user_name` VARCHAR(20) NOT NULL,
+                            `is_active` BIT NOT NULL,
+                            `password_hash` VARCHAR(128) NOT NULL,
+                            `user_role` VARCHAR(20) NOT NULL
+);
+
+ALTER TABLE `accounts`
+    ADD PRIMARY KEY (`user_name`);
+
+CREATE TABLE `orders` (
+                          `id` VARCHAR(50) NOT NULL,
+                          `amount` DOUBLE PRECISION NOT NULL,
+                          `customer_address` VARCHAR(255) NOT NULL,
+                          `customer_email` VARCHAR(128) NOT NULL,
+                          `customer_name` VARCHAR(255) NOT NULL,
+                          `customer_phone` VARCHAR(128) NOT NULL,
+                          `order_date` DATETIME NOT NULL,
+                          `order_number` INTEGER NOT NULL
+);
+
+ALTER TABLE `orders`
+    ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `orders`
+    ADD CONSTRAINT `orders_uk` UNIQUE (`order_number`);
+
+
+CREATE TABLE `cart_items` (
+                              `id` VARCHAR(50) NOT NULL,
+                              `amount` DOUBLE PRECISION NOT NULL,
+                              `price` DOUBLE PRECISION NOT NULL,
+                              `quantity` INTEGER NOT NULL,
+                              `order_id` VARCHAR(50) NOT NULL,
+                              `book_id` VARCHAR(20) NOT NULL
+);
+
+ALTER TABLE `cart_items`
+    ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `cart_items`
+    ADD CONSTRAINT `cart_items_orders_fk` FOREIGN KEY (`order_id`)
+        REFERENCES `orders` (`id`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION;
+
+ALTER TABLE `cart_items`
+    ADD CONSTRAINT `cart_items_books_fk` FOREIGN KEY (`book_id`)
+        REFERENCES `books` (`isbn`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION;
+
+
+ALTER TABLE `cart_items`
+    ADD INDEX `cart_items_orders_fk_index` (`order_id` ASC);
+
+ALTER TABLE `cart_items`
+    ADD INDEX `cart_items_books_fk_index` (`book_id` ASC);
+
+
+
+INSERT INTO accounts (`user_name`, `is_active`, `password_hash`, `user_role`)
 VALUES ('admin', 1,
         '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', 'ROLE_ADMIN');
 
-INSERT INTO accounts (`user_name`, `active`, `encrypted_password`, `user_role`)
+INSERT INTO accounts (`user_name`, `is_active`, `password_hash`, `user_role`)
 VALUES ('op', 1,
         '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', 'ROLE_OP');
 
@@ -238,3 +255,6 @@ INSERT INTO books (id, isbn, author, title, year, publisher, description, price)
 VALUES (74, '978-5-699-12014-74', 'Tasnim Reilly', 'Unofficial Crimes', 2020, 'Cadent', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 120.00);
 INSERT INTO books (id, isbn, author, title, year, publisher, description, price)
 VALUES (75, '978-5-699-12014-75', 'Tommy-Lee Villalobos', 'We Are Powerful', 2001, 'Markus Wiener Publishers', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 81.90);
+
+INSERT INTO orders (id, amount, customer_address, customer_email, customer_name, customer_phone, order_date, order_number)
+VALUES (1, '99', 'New York streets', 'johndoe@johndoe.com', 'John Doe', 12345678, NOW(), 1);
