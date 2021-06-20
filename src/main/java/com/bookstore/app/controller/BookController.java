@@ -98,8 +98,8 @@ public class BookController {
     }
 
     @GetMapping("/viewBookDetails/{isbn}")
-    public String viewBookDetails(@PathVariable(value = "id") Integer id, Model model) {
-        Optional<Book> book = bookRepository.findById(id);
+    public String viewBookDetails(@PathVariable(value = "isbn") String isbn, Model model) {
+        Optional<Book> book = bookRepository.findBookByIsbn(isbn);
         ArrayList<Book> result = new ArrayList<>();
         book.ifPresent(result::add);
         model.addAttribute("book", result);

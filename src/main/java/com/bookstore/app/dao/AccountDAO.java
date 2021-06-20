@@ -16,6 +16,8 @@ public class AccountDAO {
 
     public Account findAccount(String userName) {
         Session session = this.sessionFactory.getCurrentSession();
-        return session.find(Account.class, userName);
+        return session.createQuery("select a from Account a where a.userName = :userName", Account.class)
+                .setParameter("userName", userName)
+                .getSingleResult();
     }
 }

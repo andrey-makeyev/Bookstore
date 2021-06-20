@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class OrderInfo {
 
-    private String id;
+    private Integer id;
     private Date orderDate;
     private int orderNumber;
     private double amount;
@@ -23,7 +23,7 @@ public class OrderInfo {
     //}
 
     // Using for Hibernate Query.
-    public OrderInfo(String id, Date orderDate, int orderNumber, //
+    public OrderInfo(Integer id, Date orderDate, int orderNumber, //
                      double amount, String customerName, String customerAddress, //
                      String customerEmail, String customerPhone) {
         this.id = id;
@@ -37,11 +37,11 @@ public class OrderInfo {
         this.customerPhone = customerPhone;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -3,7 +3,7 @@ package com.bookstore.app.model;
 import java.math.BigDecimal;
 
 public class OrderDetailInfo {
-    private String id;
+    private Integer id;
 
     private String bookIsbn;
     private String bookTitle;
@@ -17,7 +17,7 @@ public class OrderDetailInfo {
     }
 
     // Using for JPA/Hibernate Query.
-    public OrderDetailInfo(String id, String bookIsbn, //
+    public OrderDetailInfo(Integer id, String bookIsbn, //
                            String bookTitle, int quantity, double price, double amount) {
         this.id = id;
         this.bookIsbn = bookIsbn;
@@ -27,11 +27,11 @@ public class OrderDetailInfo {
         this.amount = amount;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

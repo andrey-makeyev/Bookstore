@@ -56,7 +56,6 @@ public class BookDAO extends BookForm {
     public void saveBook(BookForm bookForm) throws IOException {
         Session session = this.sessionFactory.getCurrentSession();
 
-        Integer id = bookForm.getId();
         String isbn = bookForm.getIsbn();
 
         Book book = null;
@@ -72,7 +71,6 @@ public class BookDAO extends BookForm {
         }
 
         try {
-            book.setId(id);
             book.setIsbn(isbn);
             book.setTitle(bookForm.getTitle());
             book.setAuthor(bookForm.getAuthor());

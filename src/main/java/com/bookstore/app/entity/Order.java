@@ -3,23 +3,24 @@ package com.bookstore.app.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "orders",
-        uniqueConstraints = { @UniqueConstraint(columnNames = "order_number") })
+@Table(name = "orders")
 public class Order implements Serializable {
 
     private static final long serialVersionUID = -2576670215015463100L;
 
     @Id
-    @Column(name = "id", length = 50, nullable = false)
-    private String id;
+    @Column(name = "id", nullable = false)
+    @GeneratedValue
+    private Integer id;
 
     @Column(name = "order_date", nullable = false)
     private Date orderDate;
 
-    @Column(name = "order_number", nullable = false)
+    @Column(name = "order_number", nullable = false, unique = true)
     private int orderNumber;
 
     @Column(name = "amount", nullable = false)
@@ -37,11 +38,11 @@ public class Order implements Serializable {
     @Column(name = "customer_phone", length = 128, nullable = false)
     private String customerPhone;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -101,4 +102,23 @@ public class Order implements Serializable {
         this.customerPhone = customerPhone;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Objects.equals(id, order.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+               "id=" + id +
+               '}';
+    }
 }

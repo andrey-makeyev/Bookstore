@@ -10,8 +10,6 @@ import java.math.BigDecimal;
 
 public class BookForm {
 
-    private Integer id;
-
     @Valid
     @NotBlank(message = "Required field!")
     private String isbn;
@@ -47,7 +45,6 @@ public class BookForm {
     }*/
 
     public BookForm() {
-        this.id = getId();
         this.isbn = getIsbn();
         this.title = getTitle();
         this.author = getAuthor();
@@ -57,14 +54,6 @@ public class BookForm {
         this.price = getPrice();
         this.imageFile = getImageFile();
         this.newBook = true;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getIsbn() {

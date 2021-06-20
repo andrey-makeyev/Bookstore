@@ -46,7 +46,6 @@ public class OrderDAO {
         int orderNumber = this.getMaxOrderNumber() + 1;
         Order order = new Order();
 
-        order.setId(UUID.randomUUID().toString());
         order.setOrderNumber(orderNumber);
         order.setOrderDate(new Date());
         order.setAmount(cartInfo.getAmountTotal());
@@ -63,7 +62,6 @@ public class OrderDAO {
 
         for (CartLineInfo line : lines) {
             CartItem detail = new CartItem();
-            detail.setId(UUID.randomUUID().toString());
             detail.setOrder(order);
             detail.setAmount(line.getAmount());
             detail.setPrice(line.getBookInfo().getPrice());
@@ -95,12 +93,12 @@ public class OrderDAO {
         return new PaginationResult<OrderInfo>(query, page, maxResult, maxNavigationPage);
     }
 
-    public Order findOrder(String orderId) {
+    public Order findOrder(Integer orderId) {
         Session session = this.sessionFactory.getCurrentSession();
         return session.find(Order.class, orderId);
     }
 
-    public OrderInfo getOrderInfo(String orderId) {
+    public OrderInfo getOrderInfo(Integer orderId) {
         Order order = this.findOrder(orderId);
         if (order == null) {
             return null;
@@ -110,9 +108,9 @@ public class OrderDAO {
                 order.getCustomerAddress(), order.getCustomerEmail(), order.getCustomerPhone());
     }
 
-    public List<OrderDetailInfo> listOrderDetailInfos(String orderId) {
+    public List<OrderDetailInfo> listOrderDetailInfos(Integer orderId) {
         String sql = "Select new " + OrderDetailInfo.class.getName() //
-                + "(d.id, d.book.isbn, d.book.title , d.quantity,d.price,d.amount) "//
+                + "(d.id, d.book.isbn, d.book.title , d.quantity, d.price, d.amount) "//
                 + " from " + CartItem.class.getName() + " d "//
                 + " where d.order.id = :orderId ";
 

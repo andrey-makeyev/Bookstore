@@ -34,9 +34,13 @@ CREATE TABLE `books` (
 );
 
 ALTER TABLE `books`
-    ADD PRIMARY KEY (`isbn`);
+    ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `books`
+    ADD CONSTRAINT `books_isbn_uk` UNIQUE (`isbn`);
 
 CREATE TABLE `accounts` (
+                            `id` INT(11) NOT NULL,
                             `user_name` VARCHAR(20) NOT NULL,
                             `is_active` BIT NOT NULL,
                             `password_hash` VARCHAR(128) NOT NULL,
@@ -44,10 +48,10 @@ CREATE TABLE `accounts` (
 );
 
 ALTER TABLE `accounts`
-    ADD PRIMARY KEY (`user_name`);
+    ADD PRIMARY KEY (`id`);
 
 CREATE TABLE `orders` (
-                          `id` VARCHAR(50) NOT NULL,
+                          `id` INT(11) NOT NULL,
                           `amount` DOUBLE PRECISION NOT NULL,
                           `customer_address` VARCHAR(255) NOT NULL,
                           `customer_email` VARCHAR(128) NOT NULL,
@@ -63,14 +67,15 @@ ALTER TABLE `orders`
 ALTER TABLE `orders`
     ADD CONSTRAINT `orders_uk` UNIQUE (`order_number`);
 
+INSERT INTO `hibernate_sequence` (`sequence_name`, `next_val`) VALUES ('default', 1000);
 
 CREATE TABLE `cart_items` (
-                              `id` VARCHAR(50) NOT NULL,
+                              `id` INT(11) NOT NULL,
                               `amount` DOUBLE PRECISION NOT NULL,
                               `price` DOUBLE PRECISION NOT NULL,
                               `quantity` INTEGER NOT NULL,
-                              `order_id` VARCHAR(50) NOT NULL,
-                              `book_id` VARCHAR(20) NOT NULL
+                              `order_id` INT(11) NOT NULL,
+                              `book_id` INT(11) NOT NULL
 );
 
 ALTER TABLE `cart_items`
@@ -84,10 +89,11 @@ ALTER TABLE `cart_items`
 
 ALTER TABLE `cart_items`
     ADD CONSTRAINT `cart_items_books_fk` FOREIGN KEY (`book_id`)
-        REFERENCES `books` (`isbn`)
+        REFERENCES `books` (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION;
 
+INSERT INTO `hibernate_sequence` (`sequence_name`, `next_val`) VALUES ('default', 1000);
 
 ALTER TABLE `cart_items`
     ADD INDEX `cart_items_orders_fk_index` (`order_id` ASC);
@@ -95,14 +101,19 @@ ALTER TABLE `cart_items`
 ALTER TABLE `cart_items`
     ADD INDEX `cart_items_books_fk_index` (`book_id` ASC);
 
+CREATE TABLE `hibernate_sequence` (
+    `sequence_name` VARCHAR(255) NOT NULL,
+    `next_val` INT(11) NOT NULL
+);
 
+INSERT INTO `hibernate_sequence` (`sequence_name`, `next_val`) VALUES ('default', 1000);
 
-INSERT INTO accounts (`user_name`, `is_active`, `password_hash`, `user_role`)
-VALUES ('admin', 1,
+INSERT INTO accounts (`id`, `user_name`, `is_active`, `password_hash`, `user_role`)
+VALUES (1, 'admin', 1,
         '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', 'ROLE_ADMIN');
 
-INSERT INTO accounts (`user_name`, `is_active`, `password_hash`, `user_role`)
-VALUES ('op', 1,
+INSERT INTO accounts (`id`, `user_name`, `is_active`, `password_hash`, `user_role`)
+VALUES (2, 'op', 1,
         '$2a$10$PrI5Gk9L.tSZiW9FXhTS8O8Mz9E97k2FZbFvGFFaSsiTUIl.TCrFu', 'ROLE_OP');
 
 INSERT INTO books (id, isbn, author, title, year, publisher, description, price)

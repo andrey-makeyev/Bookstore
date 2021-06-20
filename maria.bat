@@ -1,0 +1,1 @@
+call docker run -p 127.0.0.1:3306:3306  --name bookstore -e MARIADB_ROOT_PASSWORD=root -e MARIADB_DATABASE=bookstore -d mariadb:latest

@@ -2,10 +2,7 @@ package com.bookstore.app.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
@@ -17,8 +14,11 @@ public class Account implements Serializable {
     public static final String ROLE_ADMIN = "admin";
 
     @Id
-    @Column(name = "user_name", length = 20, nullable = false)
+    @Column(name = "id", nullable = false)
+    @GeneratedValue
+    private Integer id;
 
+    @Column(name = "user_name", length = 20, nullable = false, unique = true)
     private String userName;
 
     @Column(name = "password_hash", length = 128, nullable = false)
@@ -29,6 +29,14 @@ public class Account implements Serializable {
 
     @Column(name = "user_role", length = 20, nullable = false)
     private String userRole;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getUserName() {
         return userName;

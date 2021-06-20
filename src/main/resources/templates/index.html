@@ -78,7 +78,7 @@
                 <td th:text="${book.year}"></td>
                 <td th:text="${book.price}"></td>
                 <td>
-                    <a th:href="@{/viewBookDetails/{id}(id=${book.id})}"><button type="button" class="btn btn-link">See more</button></a>
+                    <a th:href="@{/viewBookDetails/{id}(id=${book.isbn})}"><button type="button" class="btn btn-link">See more</button></a>
                 </td>
                 <td>
                     <a th:href="@{|/buyBook?isbn=${book.isbn}|}"><button type="button" class="btn btn-link">Add to cart</button></a>

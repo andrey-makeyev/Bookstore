@@ -12,17 +12,16 @@ public class CartItem implements Serializable {
     private static final long serialVersionUID = 7550745928843183535L;
 
     @Id
-    @Column(name = "id", length = 50, nullable = false)
-    private String id;
+    @Column(name = "id", nullable = false)
+    @GeneratedValue
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false,
-            foreignKey = @ForeignKey(name = "cart_items_orders_fk"))
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id", nullable = false,
-            foreignKey = @ForeignKey(name = "cart_items_books_fk"))
+    @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
     @Column(name = "quantity", nullable = false)
@@ -34,11 +33,11 @@ public class CartItem implements Serializable {
     @Column(name = "amount", nullable = false)
     private double amount;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

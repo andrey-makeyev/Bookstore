@@ -11,7 +11,7 @@ public class Book implements Serializable {
     //private static final long serialVersionUID = -1000119078147252957L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -39,9 +39,6 @@ public class Book implements Serializable {
     @Lob
     @Column(columnDefinition = "MEDIUMBLOB", name = "image", nullable = true)
     private String image;
-
-    public Book() {
-    }
 
     public Integer getId() {
         return id;

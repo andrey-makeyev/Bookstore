@@ -259,7 +259,7 @@ public class ShoppingCartController {
     }
 
     @RequestMapping(value = { "/order" }, method = RequestMethod.GET)
-    public String orderView(Model model, @RequestParam("orderId") String orderId) {
+    public String orderView(Model model, @RequestParam("orderId") Integer orderId) {
         OrderInfo orderInfo = null;
         if (orderId != null) {
             orderInfo = this.orderDAO.getOrderInfo(orderId);
