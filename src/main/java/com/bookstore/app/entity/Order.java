@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
@@ -118,7 +117,7 @@ public class Order implements Serializable {
     @Override
     public String toString() {
         return "Order{" +
-               "id=" + id +
-               '}';
+                "id=" + id +
+                '}';
     }
 }

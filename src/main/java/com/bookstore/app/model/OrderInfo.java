@@ -19,12 +19,10 @@ public class OrderInfo {
     private List<OrderDetailInfo> details;
 
     //public OrderInfo(Integer id, Date orderDate, int orderNumber, double amount, String customerName, String customerAddress, String customerEmail, String customerPhone) {
-
     //}
 
-    // Using for Hibernate Query.
-    public OrderInfo(Integer id, Date orderDate, int orderNumber, //
-                     double amount, String customerName, String customerAddress, //
+    public OrderInfo(Integer id, Date orderDate, int orderNumber,
+                     double amount, String customerName, String customerAddress,
                      String customerEmail, String customerPhone) {
         this.id = id;
         this.orderDate = orderDate;

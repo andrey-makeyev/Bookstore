@@ -2,8 +2,6 @@ package com.bookstore.app.model;
 
 import com.bookstore.app.entity.Book;
 
-import java.math.BigDecimal;
-
 public class BookInfo extends Book {
     private String isbn;
     private String title;
@@ -21,7 +19,6 @@ public class BookInfo extends Book {
 
     }
 
-    // Using in JPA/Hibernate query
     public BookInfo(String isbn, String title, double price, String image) {
         this.isbn = isbn;
         this.title = title;

@@ -2,17 +2,23 @@ package com.bookstore.app.form;
 
 import com.bookstore.app.model.CustomerInfo;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
 public class CustomerForm {
 
+    @NotBlank(message = "Name is required")
     private String name;
+    @NotBlank(message = "Email is required")
     private String address;
+    @NotBlank(message = "Address is required")
     private String email;
+    @NotBlank(message = "Phone is required")
     private String phone;
 
     private boolean valid;
 
     public CustomerForm() {
-
     }
 
     public CustomerForm(CustomerInfo customerInfo) {

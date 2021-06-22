@@ -10,11 +10,18 @@
     <br>
     <br>
     <br>
-
+    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+        <h1>Bookstore Administration Panel</h1>
+    </th:block>
+    <th:block sec:authorize="hasRole('ROLE_OP')">
+        <h1>Bookstore Operator Service</h1>
+    </th:block>
+    <hr>
+    <br>
 <div class="page-title">Order Info</div>
 
 <div class="customer-info-container">
-    <h3>Customer Information:</h3>
+    <h3>Customer Information</h3>
     <ul>
         <li>Name: <span th:utext="${orderInfo.customerName}"></span></li>
         <li>Email: <span th:utext="${orderInfo.customerEmail}"></span></li>
@@ -30,13 +37,13 @@
     </ul>
 </div>
 <br/>
-<table border="1" style="width:100%">
+<table border="0" class="table table-striped table-responsive-md">
     <tr>
-        <th>Book ISBN</th>
-        <th>Book Title</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Amount</th>
+        <th class="table-bordered">Book ISBN</th>
+        <th class="table-bordered">Book Title</th>
+        <th class="table-bordered">Quantity</th>
+        <th class="table-bordered">Price</th>
+        <th class="table-bordered">Amount</th>
     </tr>
     <tr th:each="orderDetailInfo : ${orderInfo.details}">
         <td th:utext="${orderDetailInfo.bookIsbn}"></td>

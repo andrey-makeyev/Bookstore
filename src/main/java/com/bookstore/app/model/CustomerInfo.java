@@ -8,11 +8,9 @@ public class CustomerInfo {
     private String address;
     private String email;
     private String phone;
-
     private boolean valid;
 
     public CustomerInfo() {
-
     }
 
     public CustomerInfo(CustomerForm customerForm) {
