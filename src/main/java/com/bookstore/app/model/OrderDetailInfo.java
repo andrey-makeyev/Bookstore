@@ -13,11 +13,9 @@ public class OrderDetailInfo {
     private double amount;
 
     public OrderDetailInfo() {
-
     }
 
-    // Using for JPA/Hibernate Query.
-    public OrderDetailInfo(Integer id, String bookIsbn, //
+    public OrderDetailInfo(Integer id, String bookIsbn,
                            String bookTitle, int quantity, double price, double amount) {
         this.id = id;
         this.bookIsbn = bookIsbn;

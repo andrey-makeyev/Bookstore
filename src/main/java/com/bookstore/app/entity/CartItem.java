@@ -2,8 +2,6 @@ package com.bookstore.app.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.UUID;
 
 @Entity
 @Table(name = "cart_items")

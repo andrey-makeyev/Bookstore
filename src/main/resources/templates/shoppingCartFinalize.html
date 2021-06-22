@@ -10,16 +10,27 @@
     <br>
     <br>
     <br>
-
-<div class="page-title">Finalize</div>
-<div class="container">
-    <h3>Thank you for Order</h3>
-    Your order number is: <span th:utext="${lastOrderedCart.orderNumber}"></span>
+    <th:block sec:authorize="!isAuthenticated()">
+        <h1>Bookstore</h1>
+    </th:block>
+    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+        <h1>Bookstore Administration Panel</h1>
+    </th:block>
+    <th:block sec:authorize="hasRole('ROLE_OP')">
+        <h1>Bookstore Operator Service</h1>
+    </th:block>
+    <hr>
+    <br>
+    <div class="container">
+    <h3>Thank you!</h3>
+        Your order has been placed succesfully. Order number is: <span th:utext="${lastOrderedCart.orderNumber}"></span>
 </div>
+    <br>
+    <a th:href="@{/}" class="btn btn-light"> Back to Book List</a>
 </div>
-
     <br>
     <hr>
+
     <footer th:insert="blocks/footer :: footer"></footer>
 </body>
 </html>

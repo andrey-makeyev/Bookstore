@@ -4,19 +4,16 @@ import com.bookstore.app.entity.CartItem;
 import com.bookstore.app.entity.Order;
 import com.bookstore.app.entity.Book;
 import com.bookstore.app.model.*;
-//import com.bookstore.app.pagination.PaginationResult;
-import com.bookstore.app.pagination.PaginationResult;
+import com.bookstore.app.pagination.Pagination;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Transactional
 @Repository
@@ -74,14 +71,11 @@ public class OrderDAO {
             session.persist(detail);
         }
 
-        // Order Number!
         cartInfo.setOrderNumber(orderNumber);
-        // Flush
         session.flush();
     }
 
-    // @page = 1, 2, ...
-    public PaginationResult<OrderInfo> listOrderInfo(int page, int maxResult, int maxNavigationPage) {
+    public Pagination<OrderInfo> listOrderInfo(int page, int maxResult, int maxNavigationPage) {
         String sql = "Select new " + OrderInfo.class.getName()//
                 + "(ord.id, ord.orderDate, ord.orderNumber, ord.amount, "
                 + " ord.customerName, ord.customerAddress, ord.customerEmail, ord.customerPhone) " + " from "
@@ -90,7 +84,7 @@ public class OrderDAO {
 
         Session session = this.sessionFactory.getCurrentSession();
         Query<OrderInfo> query = session.createQuery(sql, OrderInfo.class);
-        return new PaginationResult<OrderInfo>(query, page, maxResult, maxNavigationPage);
+        return new Pagination<OrderInfo>(query, page, maxResult, maxNavigationPage);
     }
 
     public Order findOrder(Integer orderId) {

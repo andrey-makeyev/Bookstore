@@ -3,7 +3,7 @@ package com.bookstore.app.dao;
 import com.bookstore.app.form.BookForm;
 import com.bookstore.app.entity.Book;
 import com.bookstore.app.model.BookInfo;
-import com.bookstore.app.pagination.PaginationResult;
+import com.bookstore.app.pagination.Pagination;
 import com.bookstore.app.repository.BookRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,7 +18,6 @@ import javax.persistence.NoResultException;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Optional;
-
 
 @Transactional
 @Repository
@@ -121,7 +120,7 @@ public class BookDAO extends BookForm {
         this.bookRepository.deleteById(id);
     }
 
-    public PaginationResult<BookInfo> queryBooks(int page, int maxResult, int maxNavigationPage,
+    public Pagination<BookInfo> queryBooks(int page, int maxResult, int maxNavigationPage,
                                                  String likeName) {
         String sql = "Select new " + BookInfo.class.getName() //
                 + "(p.isbn, p.title, p.price) " + " from "//
@@ -137,10 +136,10 @@ public class BookDAO extends BookForm {
         if (likeName != null && likeName.length() > 0) {
             query.setParameter("likeName", "%" + likeName.toLowerCase() + "%");
         }
-        return new PaginationResult<BookInfo>(query, page, maxResult, maxNavigationPage);
+        return new Pagination<BookInfo>(query, page, maxResult, maxNavigationPage);
     }
 
-    public PaginationResult<BookInfo> queryBooks(int page, int maxResult, int maxNavigationPage) {
+    public Pagination<BookInfo> queryBooks(int page, int maxResult, int maxNavigationPage) {
         return queryBooks(page, maxResult, maxNavigationPage, null);
     }
 

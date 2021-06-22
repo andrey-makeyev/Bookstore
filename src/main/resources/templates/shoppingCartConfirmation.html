@@ -11,6 +11,17 @@
     <br>
     <br>
     <br>
+    <th:block sec:authorize="!isAuthenticated()">
+        <h1>Bookstore</h1>
+    </th:block>
+    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+        <h1>Bookstore Administration Panel</h1>
+    </th:block>
+    <th:block sec:authorize="hasRole('ROLE_OP')">
+        <h1>Bookstore Operator Service</h1>
+    </th:block>
+    <hr>
+    <br>
     <div class="container">
         <div class="row">
             <h2 class="text-danger">Customer Information</h2>

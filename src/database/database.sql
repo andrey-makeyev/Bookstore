@@ -67,8 +67,6 @@ ALTER TABLE `orders`
 ALTER TABLE `orders`
     ADD CONSTRAINT `orders_uk` UNIQUE (`order_number`);
 
-INSERT INTO `hibernate_sequence` (`sequence_name`, `next_val`) VALUES ('default', 1000);
-
 CREATE TABLE `cart_items` (
                               `id` INT(11) NOT NULL,
                               `amount` DOUBLE PRECISION NOT NULL,
@@ -92,8 +90,6 @@ ALTER TABLE `cart_items`
         REFERENCES `books` (`id`)
         ON DELETE NO ACTION
         ON UPDATE NO ACTION;
-
-INSERT INTO `hibernate_sequence` (`sequence_name`, `next_val`) VALUES ('default', 1000);
 
 ALTER TABLE `cart_items`
     ADD INDEX `cart_items_orders_fk_index` (`order_id` ASC);

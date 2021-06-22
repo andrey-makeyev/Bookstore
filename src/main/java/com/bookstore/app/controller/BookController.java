@@ -7,12 +7,11 @@ import java.util.Optional;
 import com.bookstore.app.dao.BookDAO;
 import com.bookstore.app.form.BookForm;
 import com.bookstore.app.model.BookInfo;
-import com.bookstore.app.pagination.PaginationResult;
+import com.bookstore.app.pagination.Pagination;
 import com.bookstore.app.repository.BookRepository;
 import com.bookstore.app.validator.BookFormValidator;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import com.bookstore.app.entity.Book;
 import com.bookstore.app.service.BookService;
@@ -61,7 +59,7 @@ public class BookController {
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public String viewHomePage(Model model) {
         String keyword = null;
-        return getAllBooks(model, 1 , "isbn", "descending", keyword);
+        return getAllBooks(model, 1, "isbn", "descending", keyword);
     }
 
     @GetMapping("/page/{pageNumber}")
@@ -83,14 +81,14 @@ public class BookController {
         return "index";
     }
 
-    @RequestMapping({ "/bookList" })
+    @RequestMapping({"/bookList"})
     public String listBookHandler(Model model, //
-                                     @RequestParam(value = "name", defaultValue = "") String likeName,
-                                     @RequestParam(value = "page", defaultValue = "1") int page) {
+                                  @RequestParam(value = "name", defaultValue = "") String likeName,
+                                  @RequestParam(value = "page", defaultValue = "1") int page) {
         final int maxResult = 5;
         final int maxNavigationPage = 10;
 
-        PaginationResult<BookInfo> result = bookDAO.queryBooks(page, //
+        Pagination<BookInfo> result = bookDAO.queryBooks(page, //
                 maxResult, maxNavigationPage, likeName);
 
         model.addAttribute("paginationBooks", result);

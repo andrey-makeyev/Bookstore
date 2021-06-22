@@ -7,9 +7,17 @@ Thymeleaf\
 MariaDB\
 Hibernate
 
-# Login
+# Administrator Login
 
 admin
+
+# Password
+
+123
+
+# Operator Login
+
+op
 
 # Password
 
